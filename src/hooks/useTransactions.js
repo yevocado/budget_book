@@ -31,7 +31,7 @@ export function useTransactions(roomId, yearMonth = getYearMonth()) {
       .select('*')
       .eq('room_id', roomId)
       .gte('date', `${yearMonth}-01`)
-      .lte('date', `${yearMonth}-31`)
+      .lte('date', new Date(yearMonth.split('-')[0], yearMonth.split('-')[1], 0).toISOString().slice(0, 10))
       .order('date', { ascending: false })
 
     setTransactions(data || [])
@@ -39,15 +39,30 @@ export function useTransactions(roomId, yearMonth = getYearMonth()) {
   }
 
   async function addTransaction(tx) {
-    return supabase.from('transactions').insert({ ...tx, room_id: roomId })
+    const { data, error } = await supabase
+      .from('transactions')
+      .insert({ ...tx, room_id: roomId })
+      .select()
+      .single()
+    if (data) handleRealtimeEvent({ eventType: 'INSERT', new: data, old: null })
+    return { data, error }
   }
 
   async function updateTransaction(id, tx) {
-    return supabase.from('transactions').update({ ...tx, updated_at: new Date().toISOString() }).eq('id', id)
+    const { data, error } = await supabase
+      .from('transactions')
+      .update({ ...tx, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single()
+    if (data) handleRealtimeEvent({ eventType: 'UPDATE', new: data, old: { id } })
+    return { data, error }
   }
 
   async function deleteTransaction(id) {
-    return supabase.from('transactions').delete().eq('id', id)
+    const { error } = await supabase.from('transactions').delete().eq('id', id)
+    if (!error) handleRealtimeEvent({ eventType: 'DELETE', new: null, old: { id } })
+    return { error }
   }
 
   const totalIncome = transactions.filter((t) => t.type === 'income').reduce((s, t) => s + t.amount, 0)

@@ -68,7 +68,7 @@ export default function DashboardPage() {
       )}
 
       <h2 className="font-bold text-gray-700 mb-3">최근 거래</h2>
-      <TransactionList transactions={transactions.slice(0, 5)} loading={loading} onEdit={() => {}} onDelete={() => {}} />
+      <TransactionList transactions={transactions.slice(0, 5)} loading={loading} />
 
       <Modal open={showForm} onClose={() => setShowForm(false)} title="거래 추가">
         <TransactionForm

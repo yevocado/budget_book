@@ -7,6 +7,7 @@ export const useTransactionStore = create((set, get) => ({
     const { eventType, new: newRow, old: oldRow } = payload
     set((state) => {
       if (eventType === 'INSERT') {
+        if (state.transactions.some((t) => t.id === newRow.id)) return state
         return { transactions: [newRow, ...state.transactions] }
       }
       if (eventType === 'UPDATE') {

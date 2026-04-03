@@ -15,8 +15,8 @@ export default function TransactionItem({ tx, onEdit, onDelete }) {
         <span className={`font-bold text-base ${tx.type === 'income' ? 'text-blue-500' : 'text-red-500'}`}>
           {tx.type === 'income' ? '+' : '-'}{formatAmount(tx.amount)}
         </span>
-        <button onClick={() => onEdit(tx)} className="text-gray-300 hover:text-gray-500 text-sm">✏️</button>
-        <button onClick={() => onDelete(tx.id)} className="text-gray-300 hover:text-red-400 text-sm">🗑️</button>
+        {onEdit && <button onClick={() => onEdit(tx)} className="text-gray-300 hover:text-gray-500 text-sm">✏️</button>}
+        {onDelete && <button onClick={() => onDelete(tx.id)} className="text-gray-300 hover:text-red-400 text-sm">🗑️</button>}
       </div>
     </div>
   )

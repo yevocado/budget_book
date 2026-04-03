@@ -14,11 +14,13 @@ export function useCouple(userId) {
 
   async function fetchRoom() {
     setLoading(true)
-    const { data: memberData } = await supabase
+    const { data: memberData, error: memberError } = await supabase
       .from('room_members')
       .select('room_id, nickname, couple_rooms(*)')
       .eq('user_id', userId)
       .single()
+
+    console.log('[useCouple] fetchRoom result:', { memberData, memberError })
 
     if (memberData) {
       setRoom(memberData.couple_rooms)

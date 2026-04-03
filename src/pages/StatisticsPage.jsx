@@ -16,9 +16,6 @@ export default function StatisticsPage() {
   const [yearMonth, setYearMonth] = useState(getYearMonth())
   const { transactions, loading } = useTransactions(room?.id, yearMonth)
 
-  if (coupleLoading) return <LoadingSpinner className="min-h-screen" />
-  if (!room) return <Navigate to="/app/settings" replace />
-
   const categoryData = useMemo(() => {
     const map = {}
     transactions.filter((t) => t.type === 'expense').forEach((t) => {
@@ -37,6 +34,9 @@ export default function StatisticsPage() {
     })
     return Object.entries(map).sort(([a], [b]) => a.localeCompare(b)).map(([date, amount]) => ({ date: date.slice(5), amount }))
   }, [transactions])
+
+  if (coupleLoading) return <LoadingSpinner className="min-h-screen" />
+  if (!room) return <Navigate to="/app/settings" replace />
 
   const [year, month] = yearMonth.split('-')
   const monthlyData = [{ month: `${month}월`, income: transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0), expense: transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0) }]
