@@ -11,11 +11,14 @@
 import argparse
 import asyncio
 import json
+import os
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
@@ -44,9 +47,39 @@ def clean(text: str) -> str:
 
 
 # ---------------------------------------------------------------- 음성
-async def _tts(text: str, path: Path) -> None:
+# ELEVENLABS_API_KEY 환경변수가 있으면 ElevenLabs, 없으면 무료 Edge TTS
+EL_KEY = os.environ.get("ELEVENLABS_API_KEY", "").strip()
+EL_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "").strip() or "21m00Tcm4TlvDq8ikWAM"
+EL_MODEL = os.environ.get("ELEVENLABS_MODEL", "").strip() or "eleven_multilingual_v2"
+
+
+def _elevenlabs(text: str, path: Path) -> None:
+    req = urllib.request.Request(
+        f"https://api.elevenlabs.io/v1/text-to-speech/{EL_VOICE}?output_format=mp3_44100_128",
+        data=json.dumps({
+            "text": text,
+            "model_id": EL_MODEL,
+            "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.3, "speed": 1.08},
+        }).encode(),
+        headers={"xi-api-key": EL_KEY, "Content-Type": "application/json", "Accept": "audio/mpeg"},
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            path.write_bytes(r.read())
+    except urllib.error.HTTPError as e:
+        raise SystemExit(f"ElevenLabs 오류 {e.code}: {e.read().decode(errors='ignore')[:300]}")
+
+
+async def _edge(text: str, path: Path) -> None:
     import edge_tts
     await edge_tts.Communicate(text, VOICE, rate=RATE).save(str(path))
+
+
+def _tts(text: str, path: Path) -> None:
+    if EL_KEY:
+        _elevenlabs(text, path)
+    else:
+        asyncio.run(_edge(text, path))
 
 
 def audio_duration(path: Path) -> float:
@@ -59,7 +92,7 @@ def audio_duration(path: Path) -> float:
 
 def make_voice(text: str, path: Path, use_tts: bool) -> float:
     if use_tts:
-        asyncio.run(_tts(text, path))
+        _tts(text, path)
     else:  # 무음 미리보기: 글자 수로 길이 추정
         dur = max(1.2, len(text) * 0.11)
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i",
@@ -217,6 +250,7 @@ def build(script_path: Path, out_dir: Path, use_tts: bool) -> Path:
 
 
 def main():
+    print("음성:", f"ElevenLabs ({EL_VOICE})" if EL_KEY else f"Edge TTS ({VOICE})")
     ap = argparse.ArgumentParser()
     ap.add_argument("scripts", nargs="+", type=Path)
     ap.add_argument("--out", type=Path, default=ROOT / "output")

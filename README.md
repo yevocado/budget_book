@@ -17,3 +17,10 @@ python make_reel.py scripts/001_kakao_late_reply.json --no-tts   # 무음 미리
 
 ## 새 릴스 만들기
 `scripts/001_kakao_late_reply.json`을 복사해서 문구만 바꾸고 push. 테마: `night` / `peach` / `mint`.
+
+## 음성: ElevenLabs (선택)
+GitHub 저장소 → Settings → Secrets and variables → Actions → New repository secret
+- `ELEVENLABS_API_KEY` — ElevenLabs API 키 (필수)
+- `ELEVENLABS_VOICE_ID` — 쓸 목소리 ID (선택, 없으면 기본 음성)
+
+키가 없으면 무료 Edge TTS(`ko-KR-SunHiNeural`)로 자동 전환됩니다.
