@@ -18,7 +18,7 @@ description: 오늘의 AI 뉴스 릴스를 에이전트 팀(리서치 → 작성
 ## 저장
 - 번호: `scripts/`와 `scripts/archive/` 안 가장 큰 번호 + 1 (세 자리).
 - 파일: `scripts/NNN_ai_daily_YYYYMMDD.json`. `id`는 파일 이름에서 `.json`을 뺀 것.
-- 고정 필드: `"style": "R", "brand": "AI 데일리", "hook_sub": "M.D (요일)"` (예: "11.21 (토)").
+- 고정 필드: `"style": "R", "brand": "ai.brief.unni", "hook_sub": "M.D (요일)"` (예: "11.21 (토)").
 - 형식은 `scripts/archive/005_ai_news_w47_R.json`과 똑같이 맞춘다. 포즈는 point / present / laptop / think / thumbsup / wave 중에서. 저장 후 `python3 -c "import json;json.load(open(경로))"`로 JSON이 깨지지 않았는지 확인한다.
 - 검수 기록: `reports/NNN_....md`에 리서치 요약, 팩트체크 판정표, 출처 URL을 남긴다.
 
