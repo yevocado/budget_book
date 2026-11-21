@@ -13,7 +13,7 @@ description: 오늘의 AI 뉴스 릴스를 에이전트 팀(리서치 → 작성
 3. **hook-editor**: 대본 JSON을 주고, 다듬은 전체 JSON을 받는다.
 4. **human-tone-editor**: 대본 JSON을 주고, 다듬은 전체 JSON을 받는다.
 5. **fact-checker**: 리서치 결과 + 대본 JSON을 준다. FIX면 제안대로 고친 뒤 한 번 더 검수한다 (최대 2회). 2회 뒤에도 FIX면 사용자에게 문제를 보고하고 멈춘다.
-6. **caption-writer**: 리서치 출처 + 최종 대본을 주고 캡션을 받아 `caption` 필드에 넣는다.
+6. **caption-writer**: 리서치 출처 + 최종 대본을 주고 릴스 캡션과 캐러셀 캡션을 받아 `caption`, `carousel_caption` 필드에 넣는다.
 
 ## 저장
 - 번호: `scripts/`와 `scripts/archive/` 안 가장 큰 번호 + 1 (세 자리).
