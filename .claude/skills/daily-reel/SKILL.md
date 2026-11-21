@@ -23,6 +23,7 @@ description: 오늘의 AI 뉴스 릴스를 에이전트 팀(리서치 → 작성
 - 검수 기록: `reports/NNN_....md`에 리서치 요약, 팩트체크 판정표, 출처 URL을 남긴다.
 
 ## 마무리
-- 대본과 기록을 커밋하고 푸시한다. 푸시하면 GitHub Actions(render.yml)가 영상을 만들어 `output/`에 올린다.
+- 대본과 기록을 커밋하고 푸시한다. 푸시하면 GitHub Actions(render.yml)가 영상과 캐러셀(`output/<id>_carousel/01.png…`, 1080x1350)을 만들어 `output/`에 올린다.
+- 캐러셀만 따로 만들 땐 `node carousel.js <대본> output`.
 - 빠른 확인이 필요하면 `python3 reel.py <대본> --no-tts --frames 2,8,14`로 프레임만 먼저 뽑아 본다.
 - 사용자에게: 고른 소식, 팩트체크 결과(특히 뺀 내용과 이유), 영상 경로를 짧게 알린다.

@@ -34,6 +34,7 @@ Claude Code에서 "오늘 릴스 만들어줘" 또는 `/daily-reel`이라고 하
 
 ## 로컬 실행
 ```bash
+node carousel.js scripts/006_ai_daily_20261121.json output   # 인스타 캐러셀 (4:5 이미지)
 pip install -r requirements.txt && npm install playwright && npx playwright install chromium
 python reel.py scripts/archive/005_ai_news_w47_R.json  # 영상 (샘플)
 python reel.py scripts/archive/005_ai_news_w47_R.json --no-tts --frames 2,8,14   # 프레임 미리보기

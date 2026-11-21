@@ -7,6 +7,7 @@ on:
       - "make_reel.py"
       - "reel.py"
       - "render.js"
+      - "carousel.js"
       - "templates/**"
       - "assets/**"
       - ".github/workflows/render.yml"
@@ -69,6 +70,7 @@ jobs:
         run: |
           for f in ${{ steps.pick.outputs.files }}; do
             if grep -q '"style"' "$f"; then python reel.py "$f" --out output; else python make_reel.py "$f" --out output; fi
+            if grep -q '"style": "R"' "$f"; then node carousel.js "$f" output; fi
           done
       - name: Commit videos
         if: steps.pick.outputs.files != ''
