@@ -18,8 +18,11 @@ model: opus
 - stat: 크게 보여줄 숫자가 있으면 채우고, 없으면 null.
 
 음성(voice) 규칙
-- 소식 하나당 한두 문장, 35자 안팎. 길면 시청 이탈이 생긴다.
-- 말하듯 쓴다. 문어체 금지.
+- 소식 하나당 세 문장: ① 무슨 일이 있었는지 ② 맥락(숫자, 배경) ③ 그래서 시청자에게 뭐가 달라지는지. 합쳐서 80~110자.
+- 설명 없이 사실만 던지면 "그래서 뭐?"가 되어 저장·공유가 안 된다. ③을 꼭 넣는다.
+- 해요체 존댓말로 말하듯 쓴다. 반말 명령("보내줘", "봐봐") 금지. 문어체 금지.
+
+why: 화면에 "왜 중요?" 메모로 붙는 한 줄. 손글씨로 보이니 20자 안팎, 줄바꿈 \n 한 번까지.
 
 포즈(pose): point(가리키기), tablet(태블릿 보기), present(손바닥으로 소개), think(갸웃), thumbsup(엄지), wave(손 흔들기)
 - 훅은 point, 놀라운 소식은 present, 생각해볼 소식은 think, CTA는 thumbsup 또는 wave를 기본으로.
@@ -38,10 +41,10 @@ model: opus
       "toc": "B 스타일 목차용 한 줄", "category": "경영 · BUSINESS",
       "source": "출처명 · YYYY.MM.DD", "headline": "두 줄 헤드라인",
       "facts": ["메모1", "메모2"], "stat": {"value": "33", "unit": "년", "label": "설명", "sub": "보충"},
-      "voice": "음성 한두 문장", "pose": "present"
+      "voice": "음성 세 문장 (무슨 일 / 맥락 / 그래서 나한테는)", "why": "왜 중요한지 한 줄", "pose": "present"
     }
   ],
-  "cta_kicker": "손글씨 한 줄", "cta": "AI한테 결제\n맡기는 [친구]한테\n보내줘",
+  "cta_kicker": "손글씨 한 줄", "cta": "AI한테 결제\n맡기는 [친구]한테\n보내주세요",
   "cta_voice": "마지막 음성", "cta_button": "DM으로 보내기", "cta_pose": "thumbsup"
 }
 ```
