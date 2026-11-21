@@ -49,7 +49,7 @@ jobs:
             FILES=$(ls scripts/*.json)
           else
             CHANGED=$(git diff --name-only "$BEFORE" "${{ github.sha }}")
-            FILES=$(echo "$CHANGED" | grep '^scripts/.*\.json$' || true)
+            FILES=$(echo "$CHANGED" | grep '^scripts/[^/]*\.json$' || true)
             # 렌더러가 바뀌면 그 렌더러를 쓰는 대본 전부 다시
             if echo "$CHANGED" | grep -qE '^(reel\.py|render\.js|templates/|assets/)'; then
               FILES="$FILES $(grep -l '"style"' scripts/*.json)"

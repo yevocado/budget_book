@@ -458,14 +458,15 @@ function buildR(D, stage) {
   });
   el("div", "grain", null, stage);
   progressBars(stage, D.scenes);
-  const head = el("div", "head", `<div class="brand">AI <em>위클리</em></div><div class="stamp2"><b></b>${esc(s.hook_sub || "")}</div>`, stage);
+  const [b1, b2] = (s.brand || "AI 데일리").split(" ");
+  const head = el("div", "head", `<div class="brand">${esc(b1)} <em>${esc(b2 || "")}</em></div><div class="stamp2"><b></b>${esc(s.hook_sub || "")}</div>`, stage);
   FX.swipeIn(head.querySelector(".brand"), .05, .5, -500); sfx("swish", .05, .6);
   FX.slam(head.querySelector(".stamp2"), .25, .35, 2); sfx("thump", .4, .5);
   const dot = head.querySelector(".stamp2 b");
   hook(t => dot.style.opacity = Math.floor(t * 2.5) % 2 ? .25 : 1);
   // 앵커 책상 + 명패 (모든 장면 공통, 캐릭터는 책상 뒤)
   const desk = el("div", "desk", null, stage);
-  const plate = el("div", "plate", esc(s.plate || "AI 위클리 · 앵커"), stage);
+  const plate = el("div", "plate", esc(s.plate || "AI 데일리 · 오늘의 앵커"), stage);
   anim(desk, [{ transform: "translateY(260px)" }, { transform: "none" }], .1, .5, OUT);
   FX.pop(plate, .5); sfx("pop", .55, .5);
 
