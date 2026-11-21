@@ -35,6 +35,7 @@ PAD = 0.35                   # 장면 사이 여백(초)
 THEMES = {
     "night": {"bg": [(24, 20, 56), (82, 38, 110)], "accent": (255, 214, 64), "text": (255, 255, 255), "dim": (150, 140, 190)},
     "peach": {"bg": [(255, 156, 120), (255, 94, 120)], "accent": (255, 255, 255), "text": (40, 20, 30), "dim": (120, 60, 70)},
+    "news": {"bg": [(12, 12, 20), (60, 14, 28)], "accent": (255, 70, 85), "text": (255, 255, 255), "dim": (160, 150, 160)},
     "mint": {"bg": [(20, 60, 60), (30, 140, 120)], "accent": (255, 235, 120), "text": (255, 255, 255), "dim": (140, 200, 190)},
 }
 
@@ -168,8 +169,9 @@ def item_frame(s, theme, idx) -> Image.Image:
     img = base_frame(theme, (idx + 1) / (len(items) + 1))
     d = ImageDraw.Draw(img, "RGBA")
     # 상단 고정 제목
-    ft = fit_font(FONT_TITLE, clean(s["hook"]), W - 160, 76)
-    d.text((W / 2, 230), clean(s["hook"]), font=ft, fill=theme["text"], anchor="mm")
+    top = clean(s.get("top_title") or s["hook"].replace("\n", " "))
+    ft = fit_font(FONT_TITLE, top, W - 160, 76)
+    d.text((W / 2, 230), top, font=ft, fill=theme["text"], anchor="mm")
     # 번호 뱃지
     last = idx == len(items) - 1
     label = "반전" if last and len(items) >= 4 else str(idx + 1)
