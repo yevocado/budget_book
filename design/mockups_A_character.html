@@ -1,0 +1,128 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>A Character</title><style>
+@font-face { font-family: "NSKR"; src: url("fonts/NotoSansKR.ttf"); font-weight: 100 900; }
+@font-face { font-family: "NSERIF"; src: url("fonts/NotoSerifKR.ttf"); font-weight: 200 900; }
+@font-face { font-family: "BHS"; src: url("fonts/BlackHanSans-Regular.ttf"); }
+@font-face { font-family: "JBM"; src: url("fonts/JetBrainsMono-Medium.ttf"); font-weight: 500; }
+@font-face { font-family: "JBM"; src: url("fonts/JetBrainsMono-Bold.ttf"); font-weight: 700; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { word-break: keep-all; background: #222; display: flex; flex-wrap: wrap; gap: 40px; padding: 40px; font-family: "NSKR", sans-serif; }
+.frame { width: 1080px; height: 1920px; position: relative; overflow: hidden; flex: none; }
+
+/* 공통: 스토리형 진행바 */
+.bars { position: absolute; top: 96px; left: 56px; right: 56px; display: flex; gap: 10px; }
+.bars i { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,.25); }
+.bars i.on { background: rgba(255,255,255,.95); }
+.bars i.half { background: linear-gradient(90deg, rgba(255,255,255,.95) 45%, rgba(255,255,255,.25) 45%); }
+
+/* ============================================================ A. Midnight Breaking */
+.A { background:
+      radial-gradient(900px 700px at 95% 8%, rgba(255,45,85,.38), transparent 60%),
+      radial-gradient(800px 800px at 0% 95%, rgba(120,60,255,.28), transparent 60%),
+      #09090D; color: #fff; }
+.A::before { content: ""; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,.045) 2px, transparent 2px),
+                    linear-gradient(90deg, rgba(255,255,255,.045) 2px, transparent 2px);
+  background-size: 72px 72px; mask-image: radial-gradient(ellipse at 50% 45%, #000 30%, transparent 85%); }
+.A .top { position: absolute; top: 150px; left: 56px; display: flex; align-items: center; gap: 22px; }
+.A .live { display: flex; align-items: center; gap: 14px; background: #FF2D55; padding: 12px 26px 12px 22px;
+  border-radius: 14px; font: 900 40px "NSKR"; letter-spacing: 2px; box-shadow: 0 10px 40px rgba(255,45,85,.45); }
+.A .live b { width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 6px rgba(255,255,255,.3); }
+.A .ch { font: 700 40px "NSKR"; color: rgba(255,255,255,.8); }
+.A .ch em { font-style: normal; color: rgba(255,255,255,.4); margin: 0 10px; }
+
+.A .hook { position: absolute; top: 560px; left: 70px; right: 70px; }
+.A .kicker { font: 700 46px "NSKR"; color: #FF5C7A; margin-bottom: 30px; letter-spacing: -1px; }
+.A h1 { font: 900 136px/1.14 "NSKR"; letter-spacing: -6px; }
+.A mark { background: none; color: #111; position: relative; z-index: 0; padding: 0 14px; }
+.A mark::before { content: ""; position: absolute; inset: 14px -4px 6px; background: #FFE03C; transform: skew(-6deg) rotate(-1.5deg); z-index: -1; border-radius: 10px; }
+.A .teasers { margin-top: 90px; display: flex; flex-direction: column; gap: 22px; }
+.A .teaser { display: flex; align-items: center; gap: 26px; padding: 28px 34px; border-radius: 28px;
+  background: rgba(255,255,255,.06); border: 2px solid rgba(255,255,255,.1); font: 700 50px "NSKR"; }
+.A .teaser span { font: 900 40px "JBM"; color: #FF2D55; }
+.A .teaser .blur { filter: blur(9px); opacity: .7; }
+
+.A .num { position: absolute; top: 330px; left: 64px; font: 900 250px/1 "NSKR"; letter-spacing: -10px;
+  color: transparent; -webkit-text-stroke: 4px #FF2D55; }
+.A .num small { font-size: 70px; -webkit-text-stroke: 0; color: rgba(255,255,255,.45); letter-spacing: 0; margin-left: 14px; }
+.A .card { position: absolute; top: 610px; left: 56px; right: 56px; padding: 56px 60px 60px; border-radius: 44px;
+  background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.04));
+  border: 2px solid rgba(255,255,255,.16); box-shadow: 0 40px 100px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.12);
+  backdrop-filter: blur(30px); }
+.A .src { display: flex; align-items: center; gap: 20px; font: 700 38px "NSKR"; color: rgba(255,255,255,.65); }
+.A .src .logo { width: 64px; height: 64px; border-radius: 18px; background: #76B900; display: grid; place-items: center; font: 900 38px "NSKR"; color: #0b0b0b; }
+.A .card h2 { margin-top: 36px; font: 900 96px/1.18 "NSKR"; letter-spacing: -4px; }
+.A .chips { margin-top: 44px; display: flex; flex-wrap: wrap; gap: 16px; }
+.A .chip { padding: 16px 28px; border-radius: 999px; background: rgba(255,45,85,.16); border: 2px solid rgba(255,45,85,.5); font: 700 38px "NSKR"; color: #FF8FA4; }
+.A .chip.y { background: rgba(255,224,60,.14); border-color: rgba(255,224,60,.5); color: #FFE98A; }
+.A .cap { position: absolute; top: 1330px; left: 40px; right: 40px; text-align: center;
+  font: 900 92px/1.25 "NSKR"; letter-spacing: -3px; text-shadow: 0 6px 0 #000, 0 0 30px rgba(0,0,0,.8); }
+.A .cap .hi { color: #FFE03C; }
+.A .cap .dim { color: rgba(255,255,255,.45); }
+
+.A .cta { position: absolute; top: 520px; left: 70px; right: 70px; text-align: center; }
+.A .cta .q { font: 700 52px "NSKR"; color: rgba(255,255,255,.6); margin-bottom: 30px; }
+.A .cta h1 { font-size: 116px; }
+.A .send { margin: 90px auto 0; width: 640px; height: 160px; border-radius: 80px; background: #FF2D55; display: flex; align-items: center; justify-content: center; gap: 26px;
+  font: 900 62px "NSKR"; box-shadow: 0 0 0 18px rgba(255,45,85,.18), 0 0 0 40px rgba(255,45,85,.08), 0 30px 80px rgba(255,45,85,.5); }
+.A .follow { margin: 110px auto 0; width: 820px; display: flex; align-items: center; gap: 30px; padding: 30px 36px; border-radius: 34px;
+  background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.12); text-align: left; }
+.A .follow .av { width: 110px; height: 110px; border-radius: 50%; background: conic-gradient(#FF2D55, #FFE03C, #7C4DFF, #FF2D55); padding: 6px; }
+.A .follow .av div { width: 100%; height: 100%; border-radius: 50%; background: #111; display: grid; place-items: center; font: 900 40px "JBM"; }
+.A .follow p { font: 900 46px "NSKR"; } .A .follow p small { display: block; font: 500 34px "NSKR"; color: rgba(255,255,255,.6); margin-top: 6px; }
+.A .follow .btn { margin-left: auto; padding: 18px 34px; border-radius: 20px; background: #fff; color: #000; font: 900 38px "NSKR"; }
+
+
+.char { position: absolute; z-index: 3; pointer-events: none;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,.35)) drop-shadow(0 0 60px rgba(255,45,85,.35)); }
+.A .hook { top: 430px; }
+.A .teasers.small { margin-top: 70px; width: 600px; }
+.A .teasers.small .teaser { font-size: 42px; padding: 24px 28px; }
+.A .bub { position: absolute; z-index: 4; padding: 34px 42px; border-radius: 36px; background: rgba(15,15,22,.85);
+  border: 2px solid rgba(255,255,255,.18); backdrop-filter: blur(20px); font: 900 66px/1.3 "NSKR"; letter-spacing: -2px; color: #fff;
+  box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+.A .bub .hi { color: #FFE03C; }
+.A .bub::after { content: ""; position: absolute; right: 80px; bottom: -40px; border: 20px solid transparent; border-top: 24px solid rgba(15,15,22,.85); }
+.A .bub.l::after { right: auto; left: 80px; }
+.A .card.c2 { top: 560px; }
+.A .num.c2 { top: 290px; }
+.A .cta.c2 { top: 400px; text-align: left; }
+.A .cta.c2 .send { margin: 70px 0 0; width: 600px; }
+</style></head><body>
+<div class="frame A" id="Ac1">
+  <div class="bars"><i class="half"></i><i></i><i></i><i></i><i></i></div>
+  <div class="top"><div class="live"><b></b>BREAKING</div><div class="ch">AI 위클리<em>|</em>11월 3주차</div></div>
+  <div class="hook">
+    <div class="kicker">이번 주 놓치면 대화 못 낌</div>
+    <h1>이번 주 AI 업계<br><mark>난리 난</mark> 소식 3개</h1>
+    <div class="teasers small">
+      <div class="teaser"><span>01</span>젠슨 황이 <span class="blur">CEO 사임</span></div>
+      <div class="teaser"><span>02</span>클로드 회사 <span class="blur">상장</span></div>
+      <div class="teaser"><span>03</span>AI 사고 <span class="blur">고객 책임</span></div>
+    </div>
+  </div>
+  <img class="char" src="../assets/character/point.png" style="width: 720px; right: -210px; bottom: -40px;">
+</div>
+<div class="frame A" id="Ac2">
+  <div class="bars"><i class="on"></i><i class="half"></i><i></i><i></i><i></i></div>
+  <div class="top"><div class="live"><b></b>BREAKING</div><div class="ch">AI 위클리<em>|</em>11월 3주차</div></div>
+  <div class="num c2">01<small>/ 03</small></div>
+  <div class="card c2">
+    <div class="src"><div class="logo">N</div>NVIDIA 공식 발표 · 2026.11.12</div>
+    <h2>젠슨 황, 엔비디아<br>CEO 전격 사임</h2>
+    <div class="chips"><div class="chip">33년 만에 퇴진</div><div class="chip y">임시 CEO 콜렛 크레스</div></div>
+  </div>
+  <div class="bub" style="top: 1140px; right: 50px; width: 560px;">33년 이끈 젠슨 황이 <span class="hi">CEO에서</span> 물러났어요</div>
+  <img class="char" src="../assets/character/present.png" style="width: 720px; left: -190px; bottom: -60px;">
+</div>
+<div class="frame A" id="Ac3">
+  <div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i></div>
+  <div class="top"><div class="live"><b></b>BREAKING</div><div class="ch">AI 위클리<em>|</em>11월 3주차</div></div>
+  <div class="cta c2">
+    <div class="q">근데 3번, 남 얘기 아님</div>
+    <h1>AI한테 결제<br>맡기는 <mark>친구</mark>한테<br>보내줘</h1>
+    <div class="send"><svg width="64" height="64" viewBox="0 0 24 24" fill="#fff"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>DM으로 보내기</div>
+  </div>
+  <img class="char" src="../assets/character/thumbsup.png" style="width: 740px; right: -170px; bottom: -50px;">
+</div>
+</body></html>
