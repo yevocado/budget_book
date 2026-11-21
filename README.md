@@ -4,7 +4,7 @@
 
 ## 흐름
 ```
-[에이전트 파이프라인]  agents/pipeline.py  (Claude API)
+[에이전트 팀]  .claude/agents/*.md  (Claude Code 서브에이전트, API 키 불필요)
   1. news-researcher    이번 주 AI 뉴스 후보 찾기 (웹 검색, 출처 2곳 이상)
   2. script-writer      소식 3개 골라 대본 JSON 작성
   3. hook-editor        첫 3초 훅 / 미리보기 / 공유 문구 다듬기
@@ -15,18 +15,16 @@
 [렌더러]  reel.py → templates/reel.html → render.js
   음성합성(ElevenLabs/Edge TTS) + 키네틱 타이포 + 캐릭터 립싱크 + 효과음 → output/*.mp4
 ```
-에이전트 역할 프롬프트는 `.claude/agents/*.md`에 있어요. Claude Code에서 서브에이전트로도 바로 쓸 수 있어요.
+Claude Code에서 "이번 주 릴스 만들어줘" 또는 `/weekly-reel`이라고 하면 `.claude/skills/weekly-reel/SKILL.md` 순서대로 에이전트들이 돌아가요.
 
 ## 자동 실행
-- `.github/workflows/weekly.yml`: 매주 월요일 07:17(한국시간)에 에이전트 → 렌더링 → 커밋. Actions 탭에서 수동 실행(스타일/주제 선택)도 가능.
-- `.github/workflows/render.yml`: `scripts/`의 대본을 고쳐서 푸시하면 그 영상만 다시 렌더링.
+- `.github/workflows/render.yml`: `scripts/`에 대본이 푸시되면 그 영상을 렌더링해서 `output/`에 커밋.
 
 ## 필요한 시크릿 (Settings → Secrets and variables → Actions)
 | 이름 | 용도 |
 |---|---|
-| `ANTHROPIC_API_KEY` | 에이전트 (필수) |
 | `ELEVENLABS_API_KEY` | 고품질 음성 (없으면 무료 Edge TTS) |
-| `ELEVENLABS_VOICE_ID` | ElevenLabs 목소리 |
+| `ELEVENLABS_VOICE_ID` | ElevenLabs 목소리 (없으면 Hana Lee) |
 
 ## 디자인
 - `"style": "A"` 속보 스타일. `"theme"`: `cobalt`(기본) / `ink` / `tomato` / `forest`
@@ -37,7 +35,6 @@
 ## 로컬 실행
 ```bash
 pip install -r requirements.txt && npm install playwright && npx playwright install chromium
-python agents/pipeline.py --style A            # ANTHROPIC_API_KEY 필요
 python reel.py scripts/003_ai_news_w47_A.json  # 영상
 python reel.py scripts/003_ai_news_w47_A.json --no-tts --frames 1,5,9   # 프레임 미리보기
 ```

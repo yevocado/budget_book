@@ -61,7 +61,7 @@ def clean(text: str) -> str:
 
 # ================================================================ 음성 + 단어 타이밍
 EL_KEY = os.environ.get("ELEVENLABS_API_KEY", "").strip()
-EL_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "").strip() or "21m00Tcm4TlvDq8ikWAM"
+EL_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "").strip() or "QPFsEL6IBxlT15xfiD6C"  # 기본: Hana Lee (한국어 여성)
 EL_MODEL = os.environ.get("ELEVENLABS_MODEL", "").strip() or "eleven_multilingual_v2"
 
 
