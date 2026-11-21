@@ -65,15 +65,15 @@ EL_VOICE = os.environ.get("ELEVENLABS_VOICE_ID", "").strip() or "QPFsEL6IBxlT15x
 EL_MODEL = os.environ.get("ELEVENLABS_MODEL", "").strip() or "eleven_multilingual_v2"
 
 
-def _elevenlabs(text: str, path: Path):
-    """ElevenLabs with-timestamps: 음성 + 글자별 시작/끝 시간."""
+EL_SETTINGS = {"stability": 0.5, "similarity_boost": 0.8, "style": 0.25, "speed": 1.08}
+EL_TAKES = int(os.environ.get("ELEVENLABS_TAKES", "3"))  # 문장 끝이 올라가면 최대 몇 번 다시 생성할지
+SENT_GAP = 0.12  # 문장 사이 쉼(초)
+
+
+def _el_request(text: str, seed: int):
     req = urllib.request.Request(
         f"https://api.elevenlabs.io/v1/text-to-speech/{EL_VOICE}/with-timestamps?output_format=mp3_44100_128",
-        data=json.dumps({
-            "text": text,
-            "model_id": EL_MODEL,
-            "voice_settings": {"stability": 0.45, "similarity_boost": 0.8, "style": 0.3, "speed": 1.08},
-        }).encode(),
+        data=json.dumps({"text": text, "model_id": EL_MODEL, "voice_settings": EL_SETTINGS, "seed": seed}).encode(),
         headers={"xi-api-key": EL_KEY, "Content-Type": "application/json"},
     )
     try:
@@ -81,19 +81,99 @@ def _elevenlabs(text: str, path: Path):
             data = json.loads(r.read())
     except urllib.error.HTTPError as e:
         raise SystemExit(f"ElevenLabs 오류 {e.code}: {e.read().decode(errors='ignore')[:300]}")
-    path.write_bytes(base64.b64decode(data["audio_base64"]))
     al = data.get("alignment") or data.get("normalized_alignment") or {}
-    chars = al.get("characters", [])
-    starts = al.get("character_start_times_seconds", [])
-    ends = al.get("character_end_times_seconds", [])
-    if "".join(chars) != text:
-        return None
-    words, i = [], 0
-    for w in text.split():
-        i = text.index(w, i)
-        words.append((w, starts[i], ends[i + len(w) - 1]))
-        i += len(w)
-    return words
+    return base64.b64decode(data["audio_base64"]), al
+
+
+def _decode(mp3: bytes, sr: int):
+    import numpy as np
+    out = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", "pipe:0", "-f", "s16le", "-ac", "1", "-ar", str(sr), "pipe:1"],
+                         input=mp3, capture_output=True, check=True).stdout
+    return np.frombuffer(out, dtype=np.int16)
+
+
+def _pitch(x, sr=16000, win=640, hop=160):
+    """10ms 간격 기본 주파수(Hz). 무성 구간은 nan."""
+    import numpy as np
+    x = x.astype(np.float32) / 32768
+    out = []
+    for i in range(0, len(x) - win, hop):
+        s = x[i:i + win] * np.hanning(win)
+        if np.sqrt(np.mean(s ** 2)) < 0.01:
+            out.append(np.nan)
+            continue
+        ac = np.correlate(s, s, "full")[win - 1:]
+        lo, hi = sr // 450, sr // 120
+        k = lo + int(np.argmax(ac[lo:hi]))
+        out.append(sr / k if ac[k] > 0.35 * ac[0] else np.nan)
+    p = np.array(out)
+    med = np.nanmedian(p) if np.any(~np.isnan(p)) else 0
+    for i, v in enumerate(p):  # 옥타브 오인식 보정
+        if np.isnan(v) or not med:
+            continue
+        while v < med * 0.65:
+            v *= 2
+        while v > med * 1.6:
+            v /= 2
+        p[i] = v
+    return p
+
+
+def ending_rise(mp3: bytes, al: dict) -> float:
+    """마지막 음절 음높이가 바로 앞 구간보다 몇 % 높은지 (+면 끝이 올라감)."""
+    import numpy as np
+    chars, st, en = al.get("characters", []), al.get("character_start_times_seconds", []), al.get("character_end_times_seconds", [])
+    j = len(chars) - 1
+    while j > 0 and (not chars[j].strip() or chars[j] in ".?!,…"):
+        j -= 1
+    if j < 3:
+        return 0.0
+    p = _pitch(_decode(mp3, 16000))
+    last = p[int(st[j] * 100):int(en[j] * 100) + 1]
+    prev = p[int(st[max(0, j - 6)] * 100):int(st[j] * 100)]
+    last, prev = last[~np.isnan(last)], prev[~np.isnan(prev)]
+    if len(last) < 2 or len(prev) < 3:
+        return 0.0
+    return float((np.median(last) / np.median(prev) - 1) * 100)
+
+
+def _elevenlabs(text: str, path: Path):
+    """문장 단위로 생성하고, 끝 억양이 올라간 문장은 다시 생성해서 가장 잘 내려간 버전을 이어 붙인다."""
+    import numpy as np
+    sents = [x.strip() for x in re.findall(r"[^.?!]+[.?!]?", text) if x.strip()]
+    pcm, words, t = [], [], 0.0
+    for si, sent in enumerate(sents):
+        best = None
+        for take in range(EL_TAKES):
+            mp3, al = _el_request(sent, seed=1000 + si * 37 + take * 7919)
+            rise = 0.0 if sent.endswith("?") else ending_rise(mp3, al)
+            if best is None or rise < best[0]:
+                best = (rise, mp3, al)
+            if rise <= 4:
+                break
+        rise, mp3, al = best
+        print(f"    끝 억양 {rise:+4.0f}% ({take + 1}회 생성) …{sent[-16:]}")
+        audio = _decode(mp3, 44100)
+        chars, st, en = al.get("characters", []), al.get("character_start_times_seconds", []), al.get("character_end_times_seconds", [])
+        joined, i = "".join(chars), 0
+        for w in sent.split():
+            k = joined.find(w, i)
+            if k < 0:
+                break
+            words.append((w, t + st[k], t + en[k + len(w) - 1]))
+            i = k + len(w)
+        pcm.append(audio)
+        t += len(audio) / 44100
+        if si < len(sents) - 1:
+            pcm.append(np.zeros(int(SENT_GAP * 44100), dtype=np.int16))
+            t += SENT_GAP
+    import wave
+    with wave.open(str(path), "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(44100)
+        w.writeframes(np.concatenate(pcm).tobytes())
+    return words if len(words) == len(text.split()) else None
 
 
 async def _edge(text: str, path: Path):
