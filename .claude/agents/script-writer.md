@@ -15,7 +15,7 @@ model: opus
 - hook: 두 줄, 줄바꿈은 \n. 형광펜을 칠할 단어 1개를 [대괄호]로 감싼다. 예: "오늘 AI 업계\n[난리 난] 소식 3개"
 - headline: 두 줄 이내, 한 줄 12자 안팎.
 - facts: 손글씨 메모처럼 짧게 2개, 각 12자 이내.
-- teaser / teaser_hidden: 첫 화면 목록에 보일 앞부분과 가려질 뒷부분. 뒷부분이 궁금해야 한다.
+- teaser / teaser_hidden: 첫 화면 목록 한 줄의 앞부분과 뒷부분. 뒷부분은 파란 글씨로 강조돼 그대로 보인다. 한 줄에 다 들어가게 합쳐서 20자 안팎.
 - stat: 크게 보여줄 숫자가 있으면 채우고, 없으면 null.
 
 음성(voice) 규칙
@@ -40,7 +40,7 @@ why: 화면에 "왜 중요?" 메모로 붙는 한 줄. 손글씨로 보이니 20
   "hook_pose": "point",
   "items": [
     {
-      "teaser": "첫 화면 목록 앞부분", "teaser_hidden": "블러로 가릴 뒷부분",
+      "teaser": "첫 화면 목록 앞부분", "teaser_hidden": "파란 글씨로 강조할 뒷부분",
       "toc": "B 스타일 목차용 한 줄", "category": "경영",
       "source": "출처명 · YYYY.MM.DD", "headline": "두 줄 헤드라인",
       "facts": ["메모1", "메모2"], "stat": {"value": "33", "unit": "년", "label": "설명", "sub": "보충"},

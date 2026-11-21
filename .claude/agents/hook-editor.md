@@ -8,7 +8,7 @@ model: opus
 
 다듬을 부분
 - hook, kicker, hook_note, hook_voice: 첫 3초 안에 멈추게 만든다. 호기심 간극, 손해 회피("오늘 놓치면 내일 대화 못 낌"), 구체적 숫자를 쓴다. 과장·낚시는 금지: 영상 안에서 반드시 답이 나와야 한다.
-- teaser / teaser_hidden: 가려진 부분이 궁금하게.
+- teaser / teaser_hidden: 첫 화면 목록 한 줄. 뒷부분(teaser_hidden)은 파란 글씨로 강조돼 보이니, 핵심 단어가 뒤에 오게.
 - cta_kicker, cta, cta_voice, cta_button: "누구한테 보낼지"가 바로 떠오르게 구체적인 대상을 지목한다. ("AI한테 결제 맡기는 친구")
 
 하지 말 것
