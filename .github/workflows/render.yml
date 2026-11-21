@@ -5,8 +5,17 @@ on:
     paths:
       - "scripts/**.json"
       - "make_reel.py"
+      - "reel.py"
+      - "render.js"
+      - "templates/**"
+      - "assets/**"
       - ".github/workflows/render.yml"
   workflow_dispatch:
+    inputs:
+      all:
+        description: "모든 대본 다시 렌더링"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -16,26 +25,57 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Install
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
           pip install -r requirements.txt
+          npm install --no-save playwright@1.63.0
+          npx playwright install --with-deps chromium
+      - name: Pick scripts to render
+        id: pick
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.all }}" = "true" ]; then
+            FILES=$(ls scripts/*.json)
+          elif [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE" 2>/dev/null; then
+            FILES=$(ls scripts/*.json)
+          else
+            CHANGED=$(git diff --name-only "$BEFORE" "${{ github.sha }}")
+            FILES=$(echo "$CHANGED" | grep '^scripts/.*\.json$' || true)
+            # 렌더러가 바뀌면 그 렌더러를 쓰는 대본 전부 다시
+            if echo "$CHANGED" | grep -qE '^(reel\.py|render\.js|templates/|assets/)'; then
+              FILES="$FILES $(grep -l '"style"' scripts/*.json)"
+            fi
+            if echo "$CHANGED" | grep -q '^make_reel\.py$'; then
+              FILES="$FILES $(grep -L '"style"' scripts/*.json)"
+            fi
+          fi
+          FILES=$(for f in $FILES; do [ -f "$f" ] && echo "$f"; done | sort -u | tr '\n' ' ')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+          echo "렌더링 대상: $FILES"
       - name: Render
+        if: steps.pick.outputs.files != ''
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           ELEVENLABS_VOICE_ID: ${{ secrets.ELEVENLABS_VOICE_ID }}
-        run: python make_reel.py scripts/*.json --out output
+        run: |
+          for f in ${{ steps.pick.outputs.files }}; do
+            if grep -q '"style"' "$f"; then python reel.py "$f" --out output; else python make_reel.py "$f" --out output; fi
+          done
       - name: Commit videos
+        if: steps.pick.outputs.files != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898333+github-actions[bot]@users.noreply.github.com"
           git add output
           git diff --cached --quiet || git commit -m "Render reels [skip ci]"
+          git pull --rebase -q || true
           git push
-      - uses: actions/upload-artifact@v4
-        with:
-          name: reels
-          path: output/

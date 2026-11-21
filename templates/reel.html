@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Reel Template</title>
+<style>
+@font-face { font-family: "NSKR"; src: url("../fonts/NotoSansKR.ttf"); font-weight: 100 900; }
+@font-face { font-family: "NSERIF"; src: url("../fonts/NotoSerifKR.ttf"); font-weight: 200 900; }
+@font-face { font-family: "JBM"; src: url("../fonts/JetBrainsMono-Bold.ttf"); font-weight: 700; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+body { word-break: keep-all; font-family: "NSKR", sans-serif; }
+#stage { position: absolute; inset: 0; overflow: hidden; }
+.scene { position: absolute; inset: 0; display: none; }
+.abs { position: absolute; }
+.ch { display: inline-block; white-space: pre; will-change: transform; }
+.ln { white-space: nowrap; }
+.mk { position: relative; display: inline-block; z-index: 0; }
+.mkbg { position: absolute; z-index: -1; transform-origin: left center; }
+.charwrap { position: absolute; z-index: 6; }
+.charwrap img { display: block; width: 100%; transform-origin: 50% 100%; }
+
+.bars { position: absolute; top: 96px; left: 56px; right: 56px; display: flex; gap: 10px; z-index: 20; }
+.bars i { flex: 1; height: 8px; border-radius: 4px; position: relative; overflow: hidden; }
+.bars i b { position: absolute; inset: 0; transform-origin: left; transform: scaleX(0); }
+
+/* ======================================================== A: Midnight Breaking */
+.A #stage { background: #09090D; color: #fff; }
+.A .bg1, .A .bg2 { position: absolute; border-radius: 50%; filter: blur(120px); }
+.A .bg1 { width: 900px; height: 800px; right: -300px; top: -250px; background: rgba(255,45,85,.55); }
+.A .bg2 { width: 900px; height: 900px; left: -400px; bottom: -300px; background: rgba(120,60,255,.40); }
+.A .grid { position: absolute; inset: -80px; background-image: linear-gradient(rgba(255,255,255,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.05) 2px, transparent 2px);
+  background-size: 72px 72px; -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 30%, transparent 80%); }
+.A .bars i { background: rgba(255,255,255,.25); } .A .bars i b { background: #fff; }
+.A .top { position: absolute; top: 150px; left: 56px; display: flex; align-items: center; gap: 22px; z-index: 20; }
+.A .live { display: flex; align-items: center; gap: 14px; background: #FF2D55; padding: 12px 26px 12px 22px; border-radius: 14px; font: 900 40px "NSKR"; letter-spacing: 2px; box-shadow: 0 10px 40px rgba(255,45,85,.45); }
+.A .live b { width: 18px; height: 18px; border-radius: 50%; background: #fff; }
+.A .ch-label { font: 700 40px "NSKR"; color: rgba(255,255,255,.8); }
+.A .kicker { font: 700 46px "NSKR"; color: #FF5C7A; letter-spacing: -1px; }
+.A .kt { font: 900 136px/1.16 "NSKR"; letter-spacing: -6px; }
+.A .kt .mk { color: #111; padding: 0 12px; }
+.A .kt .mkbg { inset: 16px -4px 8px; background: #FFE03C; border-radius: 10px; }
+.A .teaser { display: flex; align-items: center; gap: 24px; padding: 24px 30px; border-radius: 26px; margin-bottom: 20px; width: 640px;
+  background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.12); font: 700 44px "NSKR"; }
+.A .teaser span { font: 700 38px "JBM"; color: #FF2D55; }
+.A .teaser .blur { filter: blur(10px); opacity: .7; font-family: "NSKR"; color: #fff; }
+.A .num { font: 900 250px/1 "NSKR"; letter-spacing: -10px; color: transparent; -webkit-text-stroke: 4px #FF2D55; transform-origin: 20% 60%; }
+.A .num small { font-size: 70px; -webkit-text-stroke: 0; color: rgba(255,255,255,.45); letter-spacing: 0; margin-left: 14px; }
+.A .card { left: 56px; right: 56px; padding: 54px 58px 58px; border-radius: 44px;
+  background: linear-gradient(160deg, rgba(255,255,255,.15), rgba(255,255,255,.05)); border: 2px solid rgba(255,255,255,.16);
+  box-shadow: 0 40px 100px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.12); backdrop-filter: blur(30px); }
+.A .src { display: flex; align-items: center; gap: 18px; font: 700 38px "NSKR"; color: rgba(255,255,255,.65); }
+.A .src i { width: 20px; height: 20px; border-radius: 50%; background: #FF2D55; box-shadow: 0 0 0 8px rgba(255,45,85,.25); }
+.A .card h2 { margin-top: 32px; font: 900 92px/1.18 "NSKR"; letter-spacing: -4px; }
+.A .chips { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px; }
+.A .chip { padding: 16px 28px; border-radius: 999px; background: rgba(255,45,85,.16); border: 2px solid rgba(255,45,85,.5); font: 700 38px "NSKR"; color: #FF8FA4; }
+.A .chip:nth-child(2n) { background: rgba(255,224,60,.14); border-color: rgba(255,224,60,.5); color: #FFE98A; }
+.A .bub { z-index: 8; width: 580px; padding: 34px 42px; border-radius: 36px; background: rgba(15,15,22,.9); border: 2px solid rgba(255,255,255,.18);
+  font: 900 68px/1.28 "NSKR"; letter-spacing: -2px; box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+.A .bub::after { content: ""; position: absolute; bottom: -42px; border: 22px solid transparent; border-top: 26px solid rgba(15,15,22,.9); }
+.A .bub.tail-r::after { right: 90px; } .A .bub.tail-l::after { left: 90px; }
+.A .w { display: inline-block; margin-right: .22em; color: #fff; }
+.A .w.on { color: #FFE03C; }
+.A .send { display: flex; align-items: center; justify-content: center; gap: 26px; width: 620px; height: 160px; border-radius: 80px; background: #FF2D55;
+  font: 900 60px "NSKR"; box-shadow: 0 0 0 18px rgba(255,45,85,.18), 0 0 0 40px rgba(255,45,85,.08), 0 30px 80px rgba(255,45,85,.5); }
+.A .q { font: 700 52px "NSKR"; color: rgba(255,255,255,.6); }
+.A .charwrap img { filter: drop-shadow(0 0 2px rgba(255,255,255,.35)) drop-shadow(0 0 60px rgba(255,45,85,.35)); }
+
+/* ======================================================== B: Paper Press */
+.B #stage { background: #F3EEE4; color: #141414; }
+.B .paper { position: absolute; inset: 0; opacity: .5; background: repeating-linear-gradient(0deg, rgba(0,0,0,.018) 0 2px, transparent 2px 6px); }
+.B .bars i { background: rgba(0,0,0,.15); } .B .bars i b { background: #141414; }
+.B .mast { position: absolute; top: 150px; left: 64px; right: 64px; text-align: center; border-bottom: 8px double #141414; padding-bottom: 20px; z-index: 20; }
+.B .mast h3 { font: 900 84px "NSERIF"; letter-spacing: 4px; }
+.B .mast p { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 14px; border-top: 2px solid #141414; font: 700 32px "NSKR"; letter-spacing: 1px; }
+.B .tagline { font: 800 40px "NSKR"; color: #D7262E; letter-spacing: 6px; }
+.B .kt { font: 900 150px/1.14 "NSERIF"; letter-spacing: -6px; }
+.B .kt .mkbg { left: -4px; right: -4px; top: 58%; bottom: 6%; background: rgba(215,38,46,.32); }
+.B .toc { width: 580px; border-top: 3px solid #141414; z-index: 2; }
+.B .toc div { display: flex; gap: 22px; align-items: baseline; padding: 24px 0; border-bottom: 2px solid rgba(0,0,0,.18); font: 700 44px/1.3 "NSERIF"; }
+.B .toc b { font: 900 38px "NSKR"; color: #D7262E; }
+.B .cat { display: flex; align-items: center; gap: 22px; font: 800 36px "NSKR"; letter-spacing: 5px; }
+.B .cat b { font: 900 120px/1 "NSERIF"; color: #D7262E; letter-spacing: 0; display: inline-block; }
+.B h2.kt { font-size: 104px; line-height: 1.16; letter-spacing: -4px; }
+.B .by { font: 600 34px "NSKR"; color: rgba(0,0,0,.55); }
+.B .stat { width: 480px; padding: 34px 0; z-index: 2; }
+.B .stat .rule { position: absolute; left: 0; right: 0; height: 3px; background: #141414; transform-origin: left; }
+.B .stat .big { font: 900 200px/0.9 "NSERIF"; letter-spacing: -8px; }
+.B .stat .big sub { font-size: 72px; vertical-align: baseline; letter-spacing: 0; }
+.B .stat p { margin-top: 14px; font: 700 38px/1.4 "NSKR"; } .B .stat p small { display: block; color: rgba(0,0,0,.5); font-size: 30px; }
+.B .facts div { font: 700 40px/1.5 "NSKR"; padding: 10px 0; border-bottom: 2px solid rgba(0,0,0,.15); }
+.B .cap { z-index: 8; width: 580px; line-height: 1.62; }
+.B .w { display: inline-block; background: #141414; color: #F3EEE4; font: 800 64px "NSKR"; padding: 4px 18px; margin: 0 0 10px; letter-spacing: -2px; }
+.B .w.on { background: #D7262E; color: #fff; }
+.B .dm { z-index: 7; display: flex; align-items: center; gap: 20px; padding: 32px 42px; background: #141414; color: #F3EEE4; font: 900 52px "NSKR"; border-radius: 6px; box-shadow: 12px 12px 0 #D7262E; }
+.B .stamp { z-index: 7; width: 300px; height: 300px; border-radius: 50%; border: 10px solid #D7262E; color: #D7262E; display: grid; place-items: center; text-align: center;
+  font: 900 56px/1.1 "NSKR"; background: rgba(243,238,228,.85); }
+.B .stamp small { display: block; font-size: 28px; letter-spacing: 6px; margin-top: 8px; }
+.B .charwrap img { filter: drop-shadow(0 30px 40px rgba(0,0,0,.15)); }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<script>
+// ===================================================== 타임라인 엔진
+// 모든 애니메이션은 절대 시간(초)으로 등록하고, seek(t)로 프레임을 결정적으로 그린다.
+const ANIMS = [], HOOKS = [], SFX = [];
+const BACK = "cubic-bezier(.34,1.56,.64,1)", OUT = "cubic-bezier(.16,1,.3,1)";
+function anim(el, kf, start, dur, easing = OUT) {
+  const a = el.animate(kf, { duration: dur * 1000, delay: Math.max(0, start) * 1000, fill: "both", easing });
+  a.pause(); ANIMS.push(a); return a;
+}
+const hook = f => HOOKS.push(f);
+const sfx = (type, t, gain = 1) => SFX.push({ type, t: Math.max(0, +t.toFixed(3)), gain });
+window.seek = t => { for (const a of ANIMS) a.currentTime = t * 1000; for (const f of HOOKS) f(t); };
+window.SFX = SFX;
+
+const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+function el(tag, cls, html, parent) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+const at = (e, css) => (Object.assign(e.style, css), e);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const easeOut = p => 1 - Math.pow(1 - clamp(p), 3);
+
+// "[강조]" 문법으로 형광펜 구간을 지정하는 글자 단위 타이틀
+function kinetic(tag, text, parent) {
+  const root = el(tag, "kt", null, parent), chars = [], marks = [];
+  text.split("\n").forEach((line, li) => {
+    const ln = el("div", "ln", null, root);
+    const re = /\[([^\]]+)\]|([^\[]+)/g; let m;
+    while ((m = re.exec(line))) {
+      const isMark = m[1] != null, seg = isMark ? m[1] : m[2];
+      let box = ln;
+      if (isMark) { box = el("span", "mk", null, ln); const bg = el("i", "mkbg", null, box); marks.push({ el: box, bg, line: li, first: chars.length }); }
+      for (const c of seg) chars.push({ el: el("span", "ch", esc(c), box), line: li, mark: isMark });
+    }
+  });
+  return { root, chars, marks };
+}
+// 너비에 맞춰 글자 크기 줄이기
+function fit(e, maxW) {
+  let size = parseFloat(getComputedStyle(e).fontSize);
+  while (size > 30 && [...e.querySelectorAll(".ln")].some(l => l.scrollWidth > maxW)) { size -= 4; e.style.fontSize = size + "px"; }
+}
+
+// 효과 프리셋
+const FX = {
+  drop: (e, t, d = .5) => anim(e, [
+    { transform: "translateY(-150px) rotate(-18deg) scale(1.7)", opacity: 0 },
+    { transform: "translateY(14px) rotate(5deg) scale(.94)", opacity: 1, offset: .6 },
+    { transform: "none", opacity: 1 }], t, d, "cubic-bezier(.2,.9,.3,1)"),
+  rise: (e, t, d = .5) => anim(e, [
+    { transform: "translateY(70px) rotate(8deg)", opacity: 0, filter: "blur(6px)" },
+    { transform: "none", opacity: 1, filter: "blur(0)" }], t, d, BACK),
+  pop: (e, t, d = .35) => anim(e, [
+    { transform: "scale(.2) rotate(-8deg)", opacity: 0 },
+    { transform: "scale(1.12) rotate(2deg)", opacity: 1, offset: .6 },
+    { transform: "none", opacity: 1 }], t, d),
+  slam: (e, t, d = .38, rot = 0) => anim(e, [
+    { transform: `scale(3.2) rotate(${rot - 12}deg)`, opacity: 0 },
+    { transform: `scale(.92) rotate(${rot}deg)`, opacity: 1, offset: .55 },
+    { transform: `scale(1) rotate(${rot}deg)`, opacity: 1 }], t, d, "cubic-bezier(.5,0,.2,1)"),
+  swipeIn: (e, t, d = .55, from = 900) => anim(e, [
+    { transform: `translateX(${from}px) skewX(${from > 0 ? -14 : 14}deg)`, opacity: 0, filter: "blur(18px)" },
+    { transform: `translateX(${-from * .03}px) skewX(${from > 0 ? 3 : -3}deg)`, opacity: 1, filter: "blur(0)", offset: .7 },
+    { transform: "none", opacity: 1, filter: "blur(0)" }], t, d),
+  fade: (e, t, d = .4, y = 30) => anim(e, [{ transform: `translateY(${y}px)`, opacity: 0 }, { transform: "none", opacity: 1 }], t, d),
+  wipe: (e, t, d = .35) => anim(e, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], t, d, "cubic-bezier(.7,0,.2,1)"),
+  shake: (e, t, d = .35, amp = 14) => anim(e, [0, -1, 1, -1, .6, -.4, 0].map((k, i) => ({ transform: `translate(${k * amp}px, ${(i % 2 ? -1 : 1) * k * amp * .4}px)` })), t, d, "linear"),
+};
+
+// 글자 등장 (스타일별로 drop/rise) + 형광펜 + 사삭 효과음
+function animateTitle(kt, t0, mode, stagger) {
+  let lastLine = -1;
+  kt.chars.forEach((c, i) => {
+    const t = t0 + i * stagger;
+    FX[mode](c.el, t);
+    if (c.line !== lastLine) { sfx(mode === "drop" ? "pop" : "swish", t, .8); lastLine = c.line; }
+  });
+  kt.marks.forEach(m => {
+    const t = t0 + (m.first + 2) * stagger + .15;
+    FX.wipe(m.bg, t); sfx("swish", t, .9);
+    sfx("thump", t + .3, .6); FX.shake(m.el, t + .3, .3, 6);
+  });
+  const end = t0 + kt.chars.length * stagger + .5;
+  // 다 나온 뒤에도 강조 단어는 계속 꿈틀
+  hook(t => kt.marks.forEach((m, k) => {
+    const p = clamp((t - end) / .3);
+    m.el.style.transform = `rotate(${Math.sin(t * 5 + k) * 2.2 * p}deg) scale(${1 + Math.sin(t * 8 + k) * .035 * p})`;
+  }));
+  return end;
+}
+
+// 단어 묶음 자막 (A: 말풍선 / B: 검정 띠)
+function chunkWords(words, maxChars = 13, maxWords = 4) {
+  const out = []; let cur = [];
+  for (const w of words) {
+    const len = cur.reduce((a, x) => a + x[0].length, 0);
+    if (cur.length && (len + w[0].length > maxChars || cur.length >= maxWords)) { out.push(cur); cur = []; }
+    cur.push(w);
+    if (/[.,!?…]$/.test(w[0])) { out.push(cur); cur = []; }
+  }
+  if (cur.length) out.push(cur);
+  return out;
+}
+function captions(box, words, s0, sceneEnd) {
+  const chunks = chunkWords(words), nodes = [];
+  chunks.forEach((ch, ci) => {
+    const div = el("div", "chunk", null, box);
+    const spans = ch.map(w => {
+      const sp = el("span", "w", esc(w[0].replace(/[.,!?…]+$/, "")), div);
+      anim(sp, [
+        { transform: "translateY(50px) scale(.3) rotate(-10deg)", opacity: 0 },
+        { transform: "translateY(-8px) scale(1.15) rotate(3deg)", opacity: 1, offset: .6 },
+        { transform: "none", opacity: 1 }], s0 + w[1] - .05, .3);
+      return { sp, s: s0 + w[1], e: s0 + w[2] };
+    });
+    const start = s0 + ch[0][1] - .08, end = ci + 1 < chunks.length ? s0 + chunks[ci + 1][0][1] - .08 : sceneEnd;
+    sfx("tick", start + .03, .35);
+    nodes.push({ div, spans, start, end });
+  });
+  hook(t => nodes.forEach(n => {
+    n.div.style.display = t >= n.start && t < n.end ? "block" : "none";
+    n.spans.forEach((w, i) => {
+      const nx = n.spans[i + 1] ? n.spans[i + 1].s : n.end;
+      w.sp.classList.toggle("on", t >= w.s - .03 && t < nx - .03);
+    });
+  }));
+  return chunks.length ? s0 + words[0][1] - .12 : s0;
+}
+
+// 캐릭터: 아래에서 통통 튀어 등장 + 숨쉬기 + 말할 때 들썩
+const SIDE = { point: "right", tablet: "right", present: "left", wave: "left", thumbsup: "right", think: "right" };
+function character(scene, pose, t0, t1, talk, opt = {}) {
+  const side = opt.side || SIDE[pose] || "right";
+  const w = opt.width || 740;
+  const wrap = el("div", "charwrap", null, scene);
+  at(wrap, { width: w + "px", bottom: (opt.bottom ?? -50) + "px", [side]: (opt.x ?? -180) + "px" });
+  const img = el("img", null, null, wrap); img.src = `../assets/character/${pose}.png`;
+  anim(wrap, [
+    { transform: `translateY(700px) rotate(${side === "right" ? 10 : -10}deg)` },
+    { transform: `translateY(-30px) rotate(${side === "right" ? -3 : 3}deg)`, offset: .65 },
+    { transform: "none" }], t0, .6, OUT);
+  sfx("boing", t0 + .05, .55);
+  hook(t => {
+    const k = t - t0, speaking = talk.some(([a, b]) => t >= a && t < b);
+    const bob = Math.sin(k * 3.2) * 9, sway = Math.sin(k * 2.1) * 1.4 + (pose === "wave" ? Math.sin(k * 9) * 2.5 : 0);
+    const sq = speaking ? 1 + Math.abs(Math.sin(k * 16)) * .018 : 1;
+    img.style.transform = `translateY(${bob}px) rotate(${sway}deg) scale(${2 - sq}, ${sq})`;
+  });
+  return { wrap, side };
+}
+
+function progressBars(parent, scenes) {
+  const bars = el("div", "bars", null, parent);
+  scenes.forEach(sc => {
+    const b = el("b", null, null, el("i", null, null, bars));
+    hook(t => b.style.transform = `scaleX(${clamp((t - sc.start) / sc.dur)})`);
+  });
+}
+
+// 장면 전환: 직전 장면이 확대+블러로 사라지고 휙 소리
+function sceneWindow(root, sc, isLast) {
+  hook(t => root.style.display = t >= sc.start - 1e-3 && t < sc.start + sc.dur ? "block" : "none");
+  if (!isLast) {
+    anim(root, [{ transform: "none", opacity: 1, filter: "blur(0)" }, { transform: "scale(1.08)", opacity: 0, filter: "blur(14px)" }],
+      sc.start + sc.dur - .18, .18, "ease-in");
+    sfx("whoosh", sc.start + sc.dur - .2, .8);
+  }
+}
+
+// ===================================================== A 스타일
+function buildA(D, stage) {
+  const s = D.script;
+  el("div", "bg1", null, stage); el("div", "bg2", null, stage);
+  const grid = el("div", "grid", null, stage);
+  const [b1, b2] = stage.querySelectorAll(".bg1,.bg2");
+  hook(t => {
+    grid.style.transform = `translate(${(t * 26) % 72}px, ${(t * 26) % 72}px)`;
+    b1.style.transform = `translate(${Math.sin(t * .5) * 140}px, ${Math.cos(t * .4) * 120}px)`;
+    b2.style.transform = `translate(${Math.cos(t * .45) * 160}px, ${Math.sin(t * .35) * 120}px)`;
+  });
+  progressBars(stage, D.scenes);
+  const top = el("div", "top", `<div class="live"><b></b>${esc(s.tag || "BREAKING")}</div><div class="ch-label">${esc(s.channel || "")} | ${esc(s.hook_sub || "")}</div>`, stage);
+  FX.swipeIn(top, .05, .5, -600); sfx("swish", .05, .6);
+  const dot = top.querySelector(".live b");
+  hook(t => dot.style.opacity = Math.floor(t * 2.5) % 2 ? .25 : 1);
+
+  D.scenes.forEach((sc, si) => {
+    const root = el("div", "scene", null, stage), t0 = sc.start, isLast = si === D.scenes.length - 1;
+    sceneWindow(root, sc, isLast);
+    const talk = [[t0 + (sc.words[0]?.[1] ?? 0), t0 + (sc.words.at(-1)?.[2] ?? 0)]];
+    if (sc.kind === "hook") {
+      const k = at(el("div", "abs kicker", esc(s.kicker || "이번 주 놓치면 대화 못 낌"), root), { top: "430px", left: "70px" });
+      FX.fade(k, t0 + .1);
+      const box = at(el("div", "abs", null, root), { top: "500px", left: "64px", right: "64px" });
+      const kt = kinetic("h1", s.hook, box); fit(kt.root, 950);
+      const end = animateTitle(kt, t0 + .2, "drop", .035);
+      hook(t => box.style.transform = `translateY(${Math.sin(t * 2) * 6}px)`);
+      const tz = at(el("div", "abs", null, root), { top: "940px", left: "64px" });
+      s.items.forEach((it, i) => {
+        const r = el("div", "teaser", `<span>${String(i + 1).padStart(2, "0")}</span>${esc(it.teaser || "")} <span class="blur">${esc(it.teaser_hidden || "??????")}</span>`, tz);
+        FX.swipeIn(r, end - .2 + i * .16, .5, -700); sfx("swish", end - .2 + i * .16, .7);
+      });
+      character(root, s.hook_pose || "point", t0 + .5, null, talk, { width: 720, x: -210, bottom: -40 });
+    } else if (sc.kind === "item") {
+      const it = s.items[sc.idx], pose = it.pose || "present", side = SIDE[pose] || "left";
+      const num = at(el("div", "abs num", `${String(sc.idx + 1).padStart(2, "0")}<small>/ ${String(s.items.length).padStart(2, "0")}</small>`, root), { top: "290px", left: "64px" });
+      FX.slam(num, t0 + .05); sfx("thump", t0 + .2, .9);
+      const card = at(el("div", "abs card", null, root), { top: "560px" });
+      el("div", "src", `<i></i>${esc(it.source || "")}`, card);
+      const kt = kinetic("h2", it.headline, card); kt.root.className = ""; at(kt.root, { marginTop: "32px", font: '900 92px/1.18 "NSKR"', letterSpacing: "-4px" });
+      FX.swipeIn(card, t0 + .15, .55, 900); sfx("whoosh", t0 + .12, .7);
+      FX.shake(card, t0 + .62, .3, 10);
+      kt.chars.forEach((c, i) => FX.rise(c.el, t0 + .45 + i * .018, .4));
+      fit(kt.root, 820);
+      const chips = el("div", "chips", null, card);
+      (it.facts || []).forEach((f, i) => { const c = el("div", "chip", esc(f), chips); FX.pop(c, t0 + .9 + i * .14); sfx("pop", t0 + .95 + i * .14, .7); });
+      const bub = at(el("div", "abs bub " + (side === "left" ? "tail-r" : "tail-l"), null, root), { top: "1150px", [side === "left" ? "right" : "left"]: "44px" });
+      const bt = captions(bub, sc.words, t0, t0 + sc.dur);
+      FX.pop(bub, bt, .3);
+      character(root, pose, t0 + .1, null, talk, { width: 720, x: -190, bottom: -60, side });
+    } else {
+      const q = at(el("div", "abs q", esc(s.cta_kicker || ""), root), { top: "400px", left: "70px" });
+      FX.fade(q, t0 + .05);
+      const box = at(el("div", "abs", null, root), { top: "480px", left: "64px", right: "64px" });
+      const kt = kinetic("h1", s.cta, box); at(kt.root, { fontSize: "116px" }); fit(kt.root, 950);
+      const end = animateTitle(kt, t0 + .15, "drop", .03);
+      const send = at(el("div", "abs send", `<svg width="64" height="64" viewBox="0 0 24 24" fill="#fff"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>${esc(s.cta_button || "DM으로 보내기")}</div>`, root), { top: "960px", left: "64px" });
+      FX.slam(send, end - .1); sfx("thump", end + .05, .8);
+      const inner = el("div", null, null, root);
+      hook(t => { const p = clamp((t - end - .3) / .3); send.style.scale = 1 + Math.sin((t - end) * 7) * .045 * p; });
+      character(root, s.cta_pose || "thumbsup", t0 + .2, null, talk, { width: 740, x: -170, bottom: -50 });
+    }
+  });
+}
+
+// ===================================================== B 스타일
+function buildB(D, stage) {
+  const s = D.script;
+  el("div", "paper", null, stage);
+  progressBars(stage, D.scenes);
+  const mast = el("div", "mast", `<h3>${esc(s.masthead || "THE AI WEEKLY")}</h3><p><span>${esc(s.vol || "")}</span><span>${esc(s.date_label || s.hook_sub || "")}</span><span>${esc(s.mast_right || "3분 요약")}</span></p>`, stage);
+  anim(mast, [{ transform: "translateY(-260px)", opacity: 0 }, { transform: "translateY(10px)", opacity: 1, offset: .7 }, { transform: "none", opacity: 1 }], 0, .6);
+  sfx("swish", .02, .8);
+
+  D.scenes.forEach((sc, si) => {
+    const root = el("div", "scene", null, stage), t0 = sc.start, isLast = si === D.scenes.length - 1;
+    sceneWindow(root, sc, isLast);
+    const talk = [[t0 + (sc.words[0]?.[1] ?? 0), t0 + (sc.words.at(-1)?.[2] ?? 0)]];
+    if (sc.kind === "hook") {
+      const tg = at(el("div", "abs tagline", esc(s.kicker || "이번 주 헤드라인"), root), { top: "500px", left: "70px" });
+      FX.fade(tg, t0 + .25);
+      const box = at(el("div", "abs", null, root), { top: "570px", left: "66px", right: "66px" });
+      const kt = kinetic("h1", s.hook, box); fit(kt.root, 950);
+      const end = animateTitle(kt, t0 + .35, "rise", .05);
+      const toc = at(el("div", "abs toc", null, root), { top: "1010px", left: "70px" });
+      anim(toc, [{ borderTopColor: "transparent" }, { borderTopColor: "#141414" }], end - .3, .2);
+      s.items.forEach((it, i) => {
+        const r = el("div", null, `<b>${String(i + 1).padStart(2, "0")}</b>${esc(it.toc || it.headline.replace(/\n/g, " "))}`, toc);
+        anim(r, [{ clipPath: "inset(0 100% 0 0)", transform: "translateX(-40px)" }, { clipPath: "inset(0 0 0 0)", transform: "none" }], end - .2 + i * .18, .45);
+        sfx("swish", end - .2 + i * .18, .75);
+      });
+      character(root, s.hook_pose || "tablet", t0 + .6, null, talk, { width: 700, x: -200, bottom: -40 });
+    } else if (sc.kind === "item") {
+      const it = s.items[sc.idx], pose = it.pose || "present", side = SIDE[pose] || "left";
+      const cat = at(el("div", "abs cat", `<b>${String(sc.idx + 1).padStart(2, "0")}</b><span>${esc(it.category || "")}</span>`, root), { top: "460px", left: "70px" });
+      FX.slam(cat.querySelector("b"), t0 + .05); sfx("thump", t0 + .2, .9);
+      FX.fade(cat.querySelector("span"), t0 + .25, .35, 0);
+      const box = at(el("div", "abs", null, root), { top: "610px", left: "70px", right: "70px" });
+      const kt = kinetic("h2", it.headline, box); fit(kt.root, 940);
+      kt.chars.forEach((c, i) => FX.rise(c.el, t0 + .3 + i * .03, .45));
+      sfx("swish", t0 + .3, .8);
+      const hEnd = t0 + .3 + kt.chars.length * .03;
+      const by = at(el("div", "abs by", "출처: " + esc(it.source || ""), root), { top: "880px", left: "70px" });
+      FX.fade(by, hEnd, .3, 10);
+      const statSide = side === "left" ? "right" : "left";
+      if (it.stat) {
+        const st = at(el("div", "abs stat", null, root), { top: "1040px", [statSide]: "70px" });
+        const r1 = at(el("div", "rule", null, st), { top: "0" }), r2 = at(el("div", "rule", null, st), { bottom: "0" });
+        FX.wipe(r1, hEnd + .1, .4); FX.wipe(r2, hEnd + .2, .4); sfx("swish", hEnd + .1, .6);
+        const big = el("div", "big", `<span class="n">0</span><sub>${esc(it.stat.unit || "")}</sub>`, st);
+        const n = big.querySelector(".n"), target = parseFloat(it.stat.value), c0 = hEnd + .2;
+        FX.pop(big, c0, .35);
+        hook(t => n.textContent = Math.round(target * easeOut((t - c0) / .9)));
+        for (let k = 0; k < 7; k++) sfx("tick", c0 + k * .11, .45 - k * .04);
+        sfx("thump", c0 + .9, .5);
+        const p = el("p", null, `${esc(it.stat.label || "")}<small>${esc(it.stat.sub || "")}</small>`, st);
+        FX.fade(p, c0 + .5, .35, 16);
+      } else {
+        const fx = at(el("div", "abs facts", null, root), { top: "1040px", [statSide]: "70px", width: "480px" });
+        (it.facts || []).forEach((f, i) => { const d = el("div", null, "— " + esc(f), fx); FX.fade(d, hEnd + .1 + i * .15, .35, 0); sfx("swish", hEnd + .1 + i * .15, .5); });
+      }
+      const cap = at(el("div", "abs cap", null, root), { top: "1430px", [statSide]: "50px" });
+      captions(cap, sc.words, t0, t0 + sc.dur);
+      character(root, pose, t0 + .1, null, talk, { width: 700, x: -170, bottom: -40, side });
+    } else {
+      const tg = at(el("div", "abs tagline", esc(s.cta_kicker || "편집자의 한마디"), root), { top: "500px", left: "70px" });
+      FX.fade(tg, t0 + .05);
+      const box = at(el("div", "abs", null, root), { top: "570px", left: "66px", right: "66px" });
+      const kt = kinetic("h1", s.cta, box); at(kt.root, { fontSize: "128px" }); fit(kt.root, 950);
+      const end = animateTitle(kt, t0 + .15, "rise", .045);
+      const dm = at(el("div", "abs dm", `<svg width="54" height="54" viewBox="0 0 24 24" fill="#F3EEE4"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>${esc(s.cta_button || "그 친구한테 보내기")}`, root), { top: "1160px", right: "70px" });
+      FX.swipeIn(dm, end - .15, .5, 700); sfx("whoosh", end - .2, .7);
+      const stamp = at(el("div", "abs stamp", `<div>${esc(s.stamp || "다음 주<br>또 만나요").replace(/&lt;br&gt;/g, "<br>")}<small>FOLLOW</small></div>`, root), { top: "1380px", right: "120px" });
+      FX.slam(stamp, end + .25, .4, -14); sfx("thump", end + .45, 1);
+      FX.shake(stage, end + .45, .25, 8);
+      character(root, s.cta_pose || "wave", t0 + .2, null, talk, { width: 700, x: -180, bottom: -40, side: "left" });
+    }
+  });
+}
+
+window.build = async D => {
+  await Promise.all([
+    document.fonts.load('900 100px "NSKR"'), document.fonts.load('700 100px "NSKR"'), document.fonts.load('800 100px "NSKR"'),
+    document.fonts.load('900 100px "NSERIF"'), document.fonts.load('700 100px "NSERIF"'), document.fonts.load('700 40px "JBM"'),
+  ]);
+  document.body.className = D.script.style || "A";
+  const stage = document.getElementById("stage");
+  (D.script.style === "B" ? buildB : buildA)(D, stage);
+  await Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => (i.onload = i.onerror = r))));
+  window.seek(0);
+  return SFX;
+};
+</script>
+</body>
+</html>
