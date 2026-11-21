@@ -241,9 +241,10 @@ function captions(box, words, s0, sceneEnd) {
 
 // 캐릭터: 부드럽게 등장 + 느린 숨쉬기 + 음성 크기에 맞춘 입 모양(립싱크)
 const SIDE = { point: "right", tablet: "right", present: "left", wave: "left", thumbsup: "right", think: "right" };
-// [입 중심 x, y, 지우개 너비, 높이, 지우개 x 보정] (원본 1122x1402 기준)
-const MOUTH = { point: [600, 455, 200, 70, -12], tablet: [596, 470, 190, 70, -14], present: [545, 456, 200, 70, -12],
-  wave: [596, 455, 200, 70, -12], thumbsup: [606, 455, 200, 70, -12], think: [655, 407, 120, 60, -8] };
+// [입 중심 x, y, 지우개 너비, 높이, 지우개 x 보정, 입 크기 배율, 입 기울기(도)] (원본 1122x1402 기준)
+// think는 얼굴이 옆으로 돌아가 있어 입을 작게, 얼굴 각도만큼 기울여서 붙인다
+const MOUTH = { point: [600, 455, 200, 70, -12, 1, 0], tablet: [596, 470, 190, 70, -14, 1, 0], present: [545, 456, 200, 70, -12, 1, 0],
+  wave: [596, 455, 200, 70, -12, 1, 0], thumbsup: [606, 455, 200, 70, -12, 1, 0], think: [656, 412, 84, 58, 0, .52, -8] };
 const IMG_W = 1122, IMG_H = 1402, MOUTH_W = 112;
 function character(scene, pose, t0, t1, D, opt = {}) {
   const side = opt.side || SIDE[pose] || "right";
@@ -252,13 +253,13 @@ function character(scene, pose, t0, t1, D, opt = {}) {
   at(wrap, { width: w + "px", bottom: (opt.bottom ?? -60) + "px", [side]: (opt.x ?? -160) + "px" });
   const body = at(el("div", null, null, wrap), { position: "relative", transformOrigin: "50% 100%" });
   const img = el("img", null, null, body); img.src = `../assets/character/${pose === "present" ? "present_closed" : pose}.png`;
-  const [mx, my, ew, eh, edx] = MOUTH[pose] || MOUTH.point;
+  const [mx, my, ew, eh, edx, msc, mrot] = MOUTH[pose] || MOUTH.point;
   // 입 벌릴 때 원래 닫힌 입(입꼬리 선)을 피부색으로 덮는 패치
   const erase = at(el("img", null, null, body), { position: "absolute", left: ((mx + edx) / IMG_W * 100) + "%", top: (my / IMG_H * 100) + "%",
     width: (ew / IMG_W * 100) + "%", transform: "translate(-50%, -50%)", opacity: 0 });
   erase.src = `../assets/character/mouth_erase_${pose}.png`;
   const mouth = at(el("img", null, null, body), { position: "absolute", left: (mx / IMG_W * 100) + "%", top: (my / IMG_H * 100) + "%",
-    width: (MOUTH_W / IMG_W * 100) + "%", transformOrigin: "50% 30%", opacity: 0 });
+    width: (MOUTH_W * msc / IMG_W * 100) + "%", transformOrigin: "50% 30%", opacity: 0 });
   mouth.src = "../assets/character/mouth_open.png";
   anim(wrap, [
     { transform: "translateY(520px)", opacity: 0 },
@@ -273,7 +274,7 @@ function character(scene, pose, t0, t1, D, opt = {}) {
     const inScene = t >= t0 && (t1 == null || t < t1);
     const o = inScene ? (env[Math.floor(t * 30)] || 0) : 0;
     mouth.style.opacity = erase.style.opacity = o > .12 ? 1 : 0;
-    mouth.style.transform = `translate(-50%, -50%) scale(${.92 + .08 * o}, ${.3 + .7 * o})`;
+    mouth.style.transform = `translate(-50%, ${msc < 1 ? -40 : -50}%) rotate(${mrot}deg) scale(${.92 + .08 * o}, ${.3 + .7 * o})`;
   });
   return { wrap, side };
 }
