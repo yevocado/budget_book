@@ -466,7 +466,7 @@ function buildR(D, stage) {
   hook(t => dot.style.opacity = Math.floor(t * 2.5) % 2 ? .25 : 1);
   // 앵커 책상 + 명패 (모든 장면 공통, 캐릭터는 책상 뒤)
   const desk = el("div", "desk", null, stage);
-  const plate = el("div", "plate", esc(s.plate || "AI 데일리 · 오늘의 앵커"), stage);
+  const plate = el("div", "plate", esc(s.plate || "AI 데일리 · AI unni"), stage);
   anim(desk, [{ transform: "translateY(260px)" }, { transform: "none" }], .1, .5, OUT);
   FX.pop(plate, .5); sfx("pop", .55, .5);
 
