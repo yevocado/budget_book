@@ -32,7 +32,7 @@ body { word-break: keep-all; font-family: "NSKR", sans-serif; }
 .A.t-tomato { --bg: #E8432E; --hi: #FFE135; --dot: #111; --pen: #FFE135; }
 .A.t-forest { --bg: #1E4D3F; --hi: #F5E663; --pen: #F5E663; }
 .A #stage { background: var(--bg); color: var(--fg); }
-.A .grain { position: absolute; inset: -40px; opacity: .22; mix-blend-mode: overlay; pointer-events: none; z-index: 30;
+.A .grain { position: absolute; inset: -40px; opacity: .16; mix-blend-mode: overlay; pointer-events: none; z-index: 30;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
 .A .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.28)); pointer-events: none; }
 .A .bars i { background: rgba(255,255,255,.3); } .A .bars i b { background: #fff; }
@@ -302,7 +302,6 @@ function buildA(D, stage) {
   const s = D.script;
   const grain = el("div", "grain", null, stage);
   el("div", "vig", null, stage);
-  hook(t => { const f = Math.floor(t * 12); grain.style.transform = `translate(${(f * 37) % 40 - 20}px, ${(f * 53) % 40 - 20}px)`; });
   progressBars(stage, D.scenes);
   const tag = el("div", "tag", `<div class="box"><b></b>${esc(s.tag || "BREAKING")}</div><div class="hand">${esc(s.channel || "")} · ${esc(s.hook_sub || "")}</div>`, stage);
   FX.slam(tag.querySelector(".box"), .05, .35, -2.5); sfx("thump", .2, .5);
