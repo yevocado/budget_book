@@ -27,7 +27,8 @@ Claude Code에서 "이번 주 릴스 만들어줘" 또는 `/weekly-reel`이라�
 | `ELEVENLABS_VOICE_ID` | ElevenLabs 목소리 (없으면 Hana Lee) |
 
 ## 디자인
-- `"style": "A"` 속보 스타일. `"theme"`: `cobalt`(기본) / `ink` / `tomato` / `forest`
+- `"style": "R"` 리소 인쇄 + 앵커 책상 스타일 (기본, 새 캐릭터 v2: point / present / laptop / think / thumbsup / wave)
+- `"style": "A"` 속보 스타일 (예전 캐릭터 v1). `"theme"`: `cobalt`(기본) / `ink` / `tomato` / `forest`
 - `"style": "B"` 신문 스타일
 - 제목의 `[대괄호]` = 형광펜, `"pose"` = 캐릭터 포즈 (point, tablet, present, think, thumbsup, wave)
 - 배경음악: `assets/bgm.mp3`를 넣으면 자동으로 깔림

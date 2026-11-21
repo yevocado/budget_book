@@ -24,8 +24,10 @@ model: opus
 
 why: 화면에 "왜 중요?" 메모로 붙는 한 줄. 손글씨로 보이니 20자 안팎, 줄바꿈 \n 한 번까지.
 
-포즈(pose): point(가리키기), tablet(태블릿 보기), present(손바닥으로 소개), think(갸웃), thumbsup(엄지), wave(손 흔들기)
-- 훅은 point, 놀라운 소식은 present, 생각해볼 소식은 think, CTA는 thumbsup 또는 wave를 기본으로.
+포즈(pose): 기본 캐릭터(v2, 검정 맨투맨) 기준
+- point(손가락 들기), present(손바닥으로 소개), laptop(노트북 치기), think(턱 괴고 생각), thumbsup(엄지 척), wave(손 흔들기)
+- 훅은 point, 놀라운 소식은 present, 기술·서비스 소식은 laptop, 생각해볼 소식은 think, CTA는 thumbsup 또는 wave를 기본으로.
+- 예전 캐릭터(v1)를 쓰는 A/B 스타일이면 tablet도 쓸 수 있다 (laptop 대신).
 
 출력 형식 (JSON 하나만, 설명 없이)
 ```json
@@ -38,7 +40,7 @@ why: 화면에 "왜 중요?" 메모로 붙는 한 줄. 손글씨로 보이니 20
   "items": [
     {
       "teaser": "첫 화면 목록 앞부분", "teaser_hidden": "블러로 가릴 뒷부분",
-      "toc": "B 스타일 목차용 한 줄", "category": "경영 · BUSINESS",
+      "toc": "B 스타일 목차용 한 줄", "category": "경영",
       "source": "출처명 · YYYY.MM.DD", "headline": "두 줄 헤드라인",
       "facts": ["메모1", "메모2"], "stat": {"value": "33", "unit": "년", "label": "설명", "sub": "보충"},
       "voice": "음성 세 문장 (무슨 일 / 맥락 / 그래서 나한테는)", "why": "왜 중요한지 한 줄", "pose": "present"
