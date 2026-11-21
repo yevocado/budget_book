@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Reels Character Mockups</title>
+<style>
+@font-face { font-family: "NSKR"; src: url("fonts/NotoSansKR.ttf"); font-weight: 100 900; }
+@font-face { font-family: "NSERIF"; src: url("fonts/NotoSerifKR.ttf"); font-weight: 200 900; }
+@font-face { font-family: "JBM"; src: url("fonts/JetBrainsMono-Bold.ttf"); font-weight: 700; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { word-break: keep-all; background: #222; display: flex; flex-wrap: wrap; gap: 40px; padding: 40px; font-family: "NSKR", sans-serif; }
+.frame { width: 1080px; height: 1920px; position: relative; overflow: hidden; flex: none; }
+.char { position: absolute; pointer-events: none; filter: drop-shadow(0 30px 40px rgba(46,46,51,.18)); }
+
+.bars { position: absolute; top: 96px; left: 56px; right: 56px; display: flex; gap: 10px; z-index: 5; }
+.bars i { flex: 1; height: 8px; border-radius: 4px; }
+
+/* ============================================================ D. Sage Anchor (캐릭터 팔레트) */
+.D { --sage: #9DB496; --sage-d: #5E7A58; --cream: #F7F2E8; --ink: #2B2B30; --coral: #FF6B4A; --butter: #FFE48A;
+  background: var(--cream); color: var(--ink); }
+.D::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(520px 520px at 100% 100%, rgba(157,180,150,.55), transparent 70%),
+              radial-gradient(460px 460px at 0% 18%, rgba(255,228,138,.55), transparent 70%); }
+.D::after { content: ""; position: absolute; inset: 0; opacity: .35;
+  background-image: radial-gradient(rgba(43,43,48,.13) 2px, transparent 2px); background-size: 40px 40px; }
+.D > * { z-index: 1; }
+.D .bars i { background: rgba(43,43,48,.13); } .D .bars i.on { background: var(--ink); }
+.D .bars i.half { background: linear-gradient(90deg, var(--ink) 45%, rgba(43,43,48,.13) 45%); }
+.D .top { position: absolute; top: 148px; left: 56px; right: 56px; display: flex; align-items: center; gap: 18px; z-index: 2; }
+.D .pill { padding: 12px 26px; border-radius: 999px; font: 800 38px "NSKR"; }
+.D .pill.k { background: var(--ink); color: var(--cream); }
+.D .pill.c { background: var(--coral); color: #fff; display: flex; align-items: center; gap: 12px; }
+.D .pill.c b { width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.D .pill.o { border: 3px solid var(--ink); }
+
+.D .hook { position: absolute; top: 330px; left: 64px; right: 64px; z-index: 2; }
+.D .hook h1 { font: 900 132px/1.13 "NSKR"; letter-spacing: -6px; }
+.D .hl { background: linear-gradient(transparent 55%, var(--butter) 55%, var(--butter) 92%, transparent 92%); padding: 0 6px; }
+.D .coral { color: var(--coral); }
+.D .sticker { position: absolute; top: 760px; left: 70px; z-index: 3; transform: rotate(-6deg); background: #fff; border: 4px solid var(--ink); border-radius: 26px;
+  padding: 22px 30px; font: 800 44px/1.35 "NSKR"; box-shadow: 10px 10px 0 var(--ink); }
+.D .sticker small { display: block; font: 700 32px "NSKR"; color: var(--sage-d); }
+
+.D .card { position: absolute; top: 300px; left: 56px; right: 56px; z-index: 2; background: #fff; border-radius: 44px; padding: 50px 56px 54px;
+  border: 4px solid var(--ink); box-shadow: 14px 14px 0 var(--ink); }
+.D .card .row { display: flex; align-items: center; justify-content: space-between; }
+.D .num { font: 900 92px/1 "NSKR"; color: var(--coral); letter-spacing: -3px; }
+.D .num small { font-size: 44px; color: rgba(43,43,48,.35); letter-spacing: 0; margin-left: 6px; }
+.D .src { font: 700 34px "NSKR"; color: rgba(43,43,48,.55); text-align: right; }
+.D .src b { display: inline-block; padding: 6px 16px; background: var(--sage); color: #fff; border-radius: 10px; margin-right: 10px; font-weight: 800; }
+.D .card h2 { margin-top: 30px; font: 900 98px/1.16 "NSKR"; letter-spacing: -4px; }
+.D .facts { margin-top: 36px; display: flex; gap: 16px; flex-wrap: wrap; }
+.D .facts span { padding: 14px 26px; border-radius: 18px; background: #F1EEE4; font: 800 38px "NSKR"; }
+.D .facts span.y { background: var(--butter); }
+
+.D .bubble { position: absolute; z-index: 4; background: var(--ink); color: #fff; border-radius: 40px; padding: 36px 44px;
+  font: 900 70px/1.3 "NSKR"; letter-spacing: -2px; }
+.D .bubble .hi { color: var(--butter); }
+.D .bubble::after { content: ""; position: absolute; width: 0; height: 0; border: 34px solid transparent; }
+.D .bubble.tl::after { left: 70px; bottom: -58px; border-top: 34px solid var(--ink); border-left: 0; }
+.D .bubble.tr::after { right: 90px; bottom: -58px; border-top: 34px solid var(--ink); border-right: 0; }
+
+.D .cta { position: absolute; top: 320px; left: 64px; right: 64px; z-index: 2; }
+.D .cta .q { font: 800 46px "NSKR"; color: var(--sage-d); margin-bottom: 24px; }
+.D .cta h1 { font: 900 118px/1.15 "NSKR"; letter-spacing: -5px; }
+.D .send { margin-top: 56px; display: inline-flex; align-items: center; gap: 22px; padding: 34px 54px; border-radius: 999px; background: var(--coral); color: #fff;
+  font: 900 58px "NSKR"; border: 4px solid var(--ink); box-shadow: 10px 10px 0 var(--ink); }
+.D .follow { position: absolute; left: 64px; top: 1180px; z-index: 4; width: 470px; background: #fff; border: 4px solid var(--ink); border-radius: 34px; padding: 30px 34px; box-shadow: 10px 10px 0 var(--ink); }
+.D .follow p { font: 900 46px "NSKR"; } .D .follow small { display: block; margin-top: 8px; font: 700 32px/1.4 "NSKR"; color: rgba(43,43,48,.6); }
+.D .follow .btn { margin-top: 24px; text-align: center; padding: 18px; border-radius: 20px; background: var(--ink); color: var(--cream); font: 900 40px "NSKR"; }
+
+/* ============================================================ B'. Paper Press + 캐릭터 */
+.B { background: #F3EEE4; color: #141414; font-family: "NSERIF"; }
+.B::before { content: ""; position: absolute; inset: 0; opacity: .5; background: repeating-linear-gradient(0deg, rgba(0,0,0,.018) 0 2px, transparent 2px 6px); }
+.B .bars i { background: rgba(0,0,0,.15); } .B .bars i.on { background: #141414; }
+.B .bars i.half { background: linear-gradient(90deg, #141414 45%, rgba(0,0,0,.15) 45%); }
+.B .mast { position: absolute; top: 150px; left: 64px; right: 64px; text-align: center; border-bottom: 8px double #141414; padding-bottom: 20px; }
+.B .mast h3 { font: 900 84px "NSERIF"; letter-spacing: 4px; }
+.B .mast p { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 14px; border-top: 2px solid #141414; font: 700 32px "NSKR"; letter-spacing: 1px; }
+.B .tagline { font: 800 40px "NSKR"; color: #D7262E; letter-spacing: 6px; margin-bottom: 30px; }
+.B .ink { background: linear-gradient(transparent 62%, rgba(215,38,46,.32) 62%, rgba(215,38,46,.32) 92%, transparent 92%); }
+.B .hook { position: absolute; top: 500px; left: 70px; right: 70px; }
+.B .hook h1 { font: 900 150px/1.12 "NSERIF"; letter-spacing: -6px; }
+.B .toc { position: absolute; top: 1010px; left: 70px; width: 560px; border-top: 3px solid #141414; z-index: 2; }
+.B .toc div { display: flex; gap: 22px; align-items: baseline; padding: 24px 0; border-bottom: 2px solid rgba(0,0,0,.18); font: 700 44px/1.3 "NSERIF"; }
+.B .toc b { font: 900 38px "NSKR"; color: #D7262E; }
+.B .sec { position: absolute; top: 460px; left: 70px; right: 70px; }
+.B .cat { display: flex; align-items: center; gap: 22px; font: 800 36px "NSKR"; letter-spacing: 5px; }
+.B .cat b { font: 900 120px/1 "NSERIF"; color: #D7262E; letter-spacing: 0; }
+.B .sec h2 { margin-top: 36px; font: 900 104px/1.16 "NSERIF"; letter-spacing: -4px; }
+.B .by { margin-top: 26px; font: 600 34px "NSKR"; color: rgba(0,0,0,.55); }
+.B .stat { position: absolute; top: 1090px; right: 70px; width: 470px; z-index: 2; padding: 34px 0; border-top: 3px solid #141414; border-bottom: 3px solid #141414; }
+.B .stat .big { font: 900 200px/0.9 "NSERIF"; letter-spacing: -8px; }
+.B .stat .big sub { font-size: 72px; vertical-align: baseline; letter-spacing: 0; }
+.B .stat p { margin-top: 14px; font: 700 38px/1.4 "NSKR"; } .B .stat p small { display: block; color: rgba(0,0,0,.5); font-size: 30px; }
+.B .cap { position: absolute; top: 1440px; right: 50px; width: 560px; z-index: 3; text-align: left; }
+.B .cap span { display: inline; background: #141414; color: #F3EEE4; font: 800 64px/1.62 "NSKR"; padding: 6px 20px; letter-spacing: -2px;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.B .cap .hi { background: #D7262E; color: #fff; }
+.B .cta { position: absolute; top: 500px; left: 70px; right: 70px; }
+.B .cta h1 { font: 900 128px/1.14 "NSERIF"; letter-spacing: -5px; }
+.B .dm { position: absolute; right: 70px; top: 1160px; z-index: 3; display: flex; align-items: center; gap: 20px; padding: 32px 42px; background: #141414; color: #F3EEE4; font: 900 52px "NSKR"; border-radius: 6px; box-shadow: 12px 12px 0 #D7262E; }
+.B .stamp { position: absolute; right: 120px; top: 1380px; z-index: 3; width: 300px; height: 300px; border-radius: 50%; border: 10px solid #D7262E; color: #D7262E;
+  display: grid; place-items: center; text-align: center; transform: rotate(-14deg); font: 900 56px/1.1 "NSKR"; background: rgba(243,238,228,.85); }
+.B .stamp small { display: block; font-size: 28px; letter-spacing: 6px; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<!-- ================= D1 HOOK : 손가락으로 제목 가리키기 ================= -->
+<div class="frame D" id="D1">
+  <div class="bars"><i class="half"></i><i></i><i></i><i></i><i></i></div>
+  <div class="top"><div class="pill c"><b></b>이번 주 AI</div><div class="pill o">11월 3주차</div></div>
+  <div class="hook">
+    <h1>이번 주<br>AI 업계<br><span class="hl">난리 난</span><br><span class="coral">소식 3개</span></h1>
+  </div>
+  <div class="sticker" style="top: 1180px;">30초면 끝<small>출퇴근길 3줄 요약</small></div>
+  <img class="char" src="../assets/character/point.png" style="width: 820px; right: -150px; bottom: -40px;">
+</div>
+
+<!-- ================= D2 ITEM : 손바닥으로 카드 소개 ================= -->
+<div class="frame D" id="D2">
+  <div class="bars"><i class="on"></i><i class="half"></i><i></i><i></i><i></i></div>
+  <div class="card">
+    <div class="row"><div class="num">01<small>/03</small></div><div class="src"><b>공식 발표</b>NVIDIA · 11.12</div></div>
+    <h2>젠슨 황,<br>엔비디아 CEO<br>전격 사임</h2>
+    <div class="facts"><span>33년 만에 퇴진</span><span class="y">임시 CEO 콜렛 크레스</span></div>
+  </div>
+  <div class="bubble tr" style="top: 1090px; right: 50px; width: 560px;">33년 이끈 젠슨 황이 <span class="hi">CEO에서 물러났어요</span></div>
+  <img class="char" src="../assets/character/present.png" style="width: 760px; left: -170px; bottom: -60px;">
+</div>
+
+<!-- ================= D3 ITEM : 생각하는 포즈 (내 얘기?) ================= -->
+<div class="frame D" id="D3">
+  <div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i><i></i></div>
+  <div class="card">
+    <div class="row"><div class="num">03<small>/03</small></div><div class="src"><b>외신</b>TechCrunch · 11.18</div></div>
+    <h2>"AI가 사고 쳐도<br>책임은 고객"</h2>
+    <div class="facts"><span>씨티 · PNC 약관 변경</span><span class="y">해킹 당해도 고객 책임</span></div>
+  </div>
+  <div class="bubble tl" style="top: 1060px; left: 50px; width: 560px;">잠깐, 이거 <span class="hi">남 얘기 아니지</span> 않아?</div>
+  <img class="char" src="../assets/character/think.png" style="width: 760px; right: -170px; bottom: -60px;">
+</div>
+
+<!-- ================= D4 CTA : 엄지 척 ================= -->
+<div class="frame D" id="D4">
+  <div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i></div>
+  <div class="cta">
+    <div class="q">근데 3번, 진짜 조심</div>
+    <h1>AI한테 결제<br>맡기는 <span class="hl">친구</span>한테<br><span class="coral">보내줘</span></h1>
+    <div class="send"><svg width="58" height="58" viewBox="0 0 24 24" fill="#fff"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>DM으로 보내기</div>
+  </div>
+  <div class="follow"><p>AI 위클리</p><small>매주 월요일<br>AI 소식 3줄 요약</small><div class="btn">+ 팔로우</div></div>
+  <img class="char" src="../assets/character/thumbsup.png" style="width: 780px; right: -150px; bottom: -50px;">
+</div>
+
+<!-- ================= B1 HOOK + 태블릿 보는 캐릭터 ================= -->
+<div class="frame B" id="B1">
+  <div class="bars"><i class="half"></i><i></i><i></i><i></i><i></i></div>
+  <div class="mast"><h3>THE AI WEEKLY</h3><p><span>VOL. 47</span><span>2026년 11월 3주차</span><span>3분 요약</span></p></div>
+  <div class="hook"><div class="tagline">이번 주 헤드라인</div><h1>AI 업계,<br><span class="ink">난리 났다.</span></h1></div>
+  <div class="toc">
+    <div><b>01</b>젠슨 황, 엔비디아 떠나다</div>
+    <div><b>02</b>앤트로픽, 나스닥 입성</div>
+    <div><b>03</b>"AI 사고는 고객 책임"</div>
+  </div>
+  <img class="char" src="../assets/character/tablet.png" style="width: 700px; right: -200px; bottom: -40px;">
+</div>
+
+<!-- ================= B2 ITEM + 소개 포즈 ================= -->
+<div class="frame B" id="B2">
+  <div class="bars"><i class="on"></i><i class="half"></i><i></i><i></i><i></i></div>
+  <div class="mast"><h3>THE AI WEEKLY</h3><p><span>VOL. 47</span><span>2026년 11월 3주차</span><span>3분 요약</span></p></div>
+  <div class="sec">
+    <div class="cat"><b>01</b>경영 · BUSINESS</div>
+    <h2>젠슨 황,<br>엔비디아 떠나다</h2>
+    <div class="by">출처: NVIDIA 공식 발표 · 11월 12일</div>
+  </div>
+  <div class="stat"><div class="big">33<sub>년</sub></div><p>엔비디아 CEO 재임 기간<small>임시 CEO: 콜렛 크레스 (현 CFO)</small></p></div>
+  <div class="cap"><span>33년 이끈 젠슨 황이</span><br><span class="hi">CEO에서 물러났어요</span></div>
+  <img class="char" src="../assets/character/present.png" style="width: 700px; left: -170px; bottom: -40px;">
+</div>
+
+<!-- ================= B3 CTA + 손 흔들기 ================= -->
+<div class="frame B" id="B3">
+  <div class="bars"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="half"></i></div>
+  <div class="mast"><h3>THE AI WEEKLY</h3><p><span>VOL. 47</span><span>2026년 11월 3주차</span><span>3분 요약</span></p></div>
+  <div class="cta"><div class="tagline">편집자의 한마디</div><h1>AI한테 결제<br>맡기는 친구,<br><span class="ink">꼭 있다.</span></h1></div>
+  <div class="dm"><svg width="54" height="54" viewBox="0 0 24 24" fill="#F3EEE4"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>그 친구한테 보내기</div>
+  <div class="stamp"><div>다음 주<br>또 만나요<small>FOLLOW</small></div></div>
+  <img class="char" src="../assets/character/wave.png" style="width: 700px; left: -180px; bottom: -40px;">
+</div>
+
+</body>
+</html>
