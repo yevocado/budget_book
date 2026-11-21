@@ -536,7 +536,10 @@ function buildR(D, stage) {
       const box = at(el("div", "abs", null, root), { top: "380px", left: "64px", right: "64px" });
       const kt = kinetic("h1", s.cta, box); at(kt.root, { fontSize: "118px" }); fit(kt.root, 950);
       const end = animateTitle(kt, t0 + .15, "drop", .028);
-      const dm = at(el("div", "abs dm", `<svg width="58" height="58" viewBox="0 0 24 24" fill="#FBF7EE"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>${esc(s.cta_button || "DM으로 보내기")}`, root), { top: "880px", left: "70px" });
+      const icon = s.cta_icon === "follow"
+        ? `<svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#FBF7EE" stroke-width="2.6" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6.5 7-6.5s7 2.5 7 6.5M19 8v6M16 11h6"/></svg>`
+        : `<svg width="58" height="58" viewBox="0 0 24 24" fill="#FBF7EE"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>`;
+      const dm = at(el("div", "abs dm", `${icon}${esc(s.cta_button || "DM으로 보내기")}`, root), { top: "880px", left: "70px" });
       FX.slam(dm, end, .35); sfx("thump", end + .15, .7);
       hook(t => { const p = clamp((t - end - .4) / .3); dm.style.scale = 1 + Math.sin((t - end) * 6) * .04 * p; });
       const pose = s.cta_pose || "wave";
