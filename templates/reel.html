@@ -498,8 +498,13 @@ function buildR(D, stage) {
       const kt = kinetic("h1", s.hook, box); fit(kt.root, 950);
       const end = animateTitle(kt, t0 + .25, "drop", .035);
       const tz = at(el("div", "abs tz", null, root), { top: "760px", left: "70px" });
+      root.style.display = "block";  // 줄 길이 측정용 (seek가 다시 정리)
       s.items.forEach((it, i) => {
-        const r = el("div", null, `<em>${i + 1}</em>${esc(it.teaser || "")} <span class="blur">${esc(it.teaser_hidden || "")}</span>`, tz);
+        const r = el("div", null, `<em>${i + 1}</em><span>${esc(it.teaser || "")} <span class="blur">${esc(it.teaser_hidden || "")}</span></span>`, tz);
+        // 한 줄에 안 들어가면 글자 크기를 줄인다
+        let fs = 46;
+        const used = () => r.lastElementChild.getBoundingClientRect().right - r.getBoundingClientRect().left;
+        while (fs > 30 && used() > 940) { fs -= 2; r.style.fontSize = fs + "px"; }
         FX.swipeIn(r, end + .1 + i * .16, .45, -600); sfx("swish", end + .1 + i * .16, .7);
       });
       const pose = s.hook_pose || "point";
