@@ -42,6 +42,10 @@ SFX_DEFS = {
     "pop": "aevalsrc='0.8*sin(2*PI*(500+900*exp(-t*35))*t)*exp(-t*28)':d=0.14",
     # 숫자/도장 "쿵"
     "thump": "aevalsrc='0.95*sin(2*PI*(55+140*exp(-t*28))*t)*exp(-t*11)':d=0.32",
+    # 손글씨 펜 "사각사각"
+    "scribble": "anoisesrc=d=0.45:c=brown:a=0.9,highpass=f=1800,lowpass=f=7000,volume='0.4+0.6*abs(sin(2*PI*14*t))':eval=frame,afade=t=in:d=0.04,afade=t=out:st=0.3:d=0.15",
+    # 종이 붙는 "착"
+    "paper": "anoisesrc=d=0.12:c=pink:a=0.9,highpass=f=900,lowpass=f=5000,afade=t=out:st=0.01:d=0.11",
     # 카운트업/자막 "틱"
     "tick": "aevalsrc='0.55*sin(2*PI*2300*t)*exp(-t*110)':d=0.05",
     # 캐릭터 등장 "뾰잉"
@@ -62,6 +66,32 @@ def make_sfx_bank(work: Path) -> dict:
         run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", src, "-ar", str(SR), "-ac", "1", "-sample_fmt", "s16", str(p)])
         bank[name] = load_mono(p)
     return bank
+
+
+def mouth_envelope(voice_wav: Path, scenes: list, fps=30) -> list:
+    """음성 크기(RMS)로 프레임별 입 벌림 정도(0~1). 무음 미리보기면 단어 타이밍으로 흉내."""
+    a = load_mono(voice_wav)
+    hop = SR // fps
+    rms = []
+    for i in range(0, len(a), hop):
+        seg = a[i:i + hop]
+        rms.append((sum(v * v for v in seg[::4]) / max(1, len(seg[::4]))) ** 0.5 if seg else 0)
+    peak = sorted(rms)[int(len(rms) * 0.95)] if rms else 0
+    if peak < 50:  # 무음
+        n = len(rms)
+        env = [0.0] * n
+        for sc in scenes:
+            for w, ws, we in sc["words"]:
+                for f in range(int((sc["start"] + ws) * fps), min(n, int((sc["start"] + we) * fps))):
+                    env[f] = 0.55 + 0.45 * abs(__import__("math").sin(f * 1.3))
+        return [round(v, 2) for v in env]
+    env, prev = [], 0.0
+    for r in rms:
+        v = min(1.0, max(0.0, (r / peak - 0.08) / 0.8))
+        v = prev * 0.35 + v * 0.65  # 살짝 부드럽게
+        env.append(round(v, 2))
+        prev = v
+    return env
 
 
 def mix_sfx(voice_wav: Path, events: list, bank: dict, out: Path, sfx_gain=0.55):
@@ -118,7 +148,7 @@ def build(script_path: Path, out_dir: Path, use_tts: bool, frames: str | None = 
     voice = work / "voice.wav"
     run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", str(work / "a.txt"), str(voice)])
 
-    data = {"script": s, "scenes": scenes, "total": round(total, 3)}
+    data = {"script": s, "scenes": scenes, "total": round(total, 3), "mouth": mouth_envelope(voice, scenes)}
     (work / "timeline.json").write_text(json.dumps(data, ensure_ascii=False))
 
     # 프레임 렌더 (브라우저)

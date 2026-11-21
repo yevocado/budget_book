@@ -10,26 +10,38 @@
   "hook_pose": "point",
   "items": [
     {
-      "teaser": "젠슨 황이", "teaser_hidden": "CEO 사임",
+      "teaser": "젠슨 황이",
+      "teaser_hidden": "CEO 사임",
       "source": "NVIDIA 공식 발표 · 2026.11.12",
       "headline": "젠슨 황, 엔비디아\nCEO 전격 사임",
-      "facts": ["33년 만에 퇴진", "임시 CEO 콜렛 크레스"],
+      "facts": [
+        "33년 만에 퇴진",
+        "임시 CEO 콜렛 크레스"
+      ],
       "voice": "엔비디아를 33년 동안 이끈 젠슨 황이, CEO에서 물러났어요.",
       "pose": "present"
     },
     {
-      "teaser": "클로드 회사", "teaser_hidden": "나스닥 상장",
+      "teaser": "클로드 회사",
+      "teaser_hidden": "나스닥 상장",
       "source": "Nasdaq · 2026.11.19",
       "headline": "클로드 만든 앤트로픽\n나스닥 상장",
-      "facts": ["티커 ANT", "공모가 주당 83달러"],
+      "facts": [
+        "티커 ANT",
+        "공모가 주당 83달러"
+      ],
       "voice": "클로드를 만든 앤트로픽이, 나스닥에 상장했어요. 공모가는 83달러예요.",
       "pose": "tablet"
     },
     {
-      "teaser": "AI 사고", "teaser_hidden": "고객 책임",
+      "teaser": "AI 사고",
+      "teaser_hidden": "고객 책임",
       "source": "TechCrunch · 2026.11.18",
       "headline": "\"AI가 사고 쳐도\n책임은 고객\"",
-      "facts": ["씨티 · PNC 약관 변경", "해킹 당해도 고객 책임"],
+      "facts": [
+        "씨티 · PNC 약관 변경",
+        "해킹 당해도 고객 책임"
+      ],
       "voice": "미국 은행들이 약관을 바꿨어요. AI가 계좌에서 사고 쳐도, 책임은 고객이래요.",
       "pose": "think"
     }
@@ -39,5 +51,7 @@
   "cta_voice": "AI한테 결제 맡기는 친구 있으면, 지금 바로 보내줘.",
   "cta_button": "DM으로 보내기",
   "cta_pose": "thumbsup",
-  "caption": "이번 주 AI 업계 3줄 요약 🔥\n1. 엔비디아 젠슨 황 CEO 사임 (11/12 발표, 콜렛 크레스 임시 CEO)\n2. 앤트로픽 나스닥 상장 (티커 ANT, 공모가 $83)\n3. 씨티·PNC 등 미국 은행 \"외부 AI 에이전트 사고는 고객 책임\" 약관 변경\n\n#AI뉴스 #엔비디아 #앤트로픽 #클로드 #테크뉴스 #IT뉴스"
+  "caption": "이번 주 AI 업계 3줄 요약 🔥\n1. 엔비디아 젠슨 황 CEO 사임 (11/12 발표, 콜렛 크레스 임시 CEO)\n2. 앤트로픽 나스닥 상장 (티커 ANT, 공모가 $83)\n3. 씨티·PNC 등 미국 은행 \"외부 AI 에이전트 사고는 고객 책임\" 약관 변경\n\n#AI뉴스 #엔비디아 #앤트로픽 #클로드 #테크뉴스 #IT뉴스",
+  "hook_note": "이거 실화",
+  "theme": "cobalt"
 }

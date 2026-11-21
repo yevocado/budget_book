@@ -6,6 +6,7 @@
 <style>
 @font-face { font-family: "NSKR"; src: url("../fonts/NotoSansKR.ttf"); font-weight: 100 900; }
 @font-face { font-family: "NSERIF"; src: url("../fonts/NotoSerifKR.ttf"); font-weight: 200 900; }
+@font-face { font-family: "PEN"; src: url("../fonts/NanumPenScript-Regular.ttf"); }
 @font-face { font-family: "JBM"; src: url("../fonts/JetBrainsMono-Bold.ttf"); font-weight: 700; }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,47 +26,45 @@ body { word-break: keep-all; font-family: "NSKR", sans-serif; }
 .bars i { flex: 1; height: 8px; border-radius: 4px; position: relative; overflow: hidden; }
 .bars i b { position: absolute; inset: 0; transform-origin: left; transform: scaleX(0); }
 
-/* ======================================================== A: Midnight Breaking */
-.A #stage { background: #09090D; color: #fff; }
-.A .bg1, .A .bg2 { position: absolute; border-radius: 50%; filter: blur(120px); }
-.A .bg1 { width: 900px; height: 800px; right: -300px; top: -250px; background: rgba(255,45,85,.55); }
-.A .bg2 { width: 900px; height: 900px; left: -400px; bottom: -300px; background: rgba(120,60,255,.40); }
-.A .grid { position: absolute; inset: -80px; background-image: linear-gradient(rgba(255,255,255,.05) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.05) 2px, transparent 2px);
-  background-size: 72px 72px; -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 30%, transparent 80%); }
-.A .bars i { background: rgba(255,255,255,.25); } .A .bars i b { background: #fff; }
-.A .top { position: absolute; top: 150px; left: 56px; display: flex; align-items: center; gap: 22px; z-index: 20; }
-.A .live { display: flex; align-items: center; gap: 14px; background: #FF2D55; padding: 12px 26px 12px 22px; border-radius: 14px; font: 900 40px "NSKR"; letter-spacing: 2px; box-shadow: 0 10px 40px rgba(255,45,85,.45); }
-.A .live b { width: 18px; height: 18px; border-radius: 50%; background: #fff; }
-.A .ch-label { font: 700 40px "NSKR"; color: rgba(255,255,255,.8); }
-.A .kicker { font: 700 46px "NSKR"; color: #FF5C7A; letter-spacing: -1px; }
-.A .kt { font: 900 136px/1.16 "NSKR"; letter-spacing: -6px; }
-.A .kt .mk { color: #111; padding: 0 12px; }
-.A .kt .mkbg { inset: 16px -4px 8px; background: #FFE03C; border-radius: 10px; }
-.A .teaser { display: flex; align-items: center; gap: 24px; padding: 24px 30px; border-radius: 26px; margin-bottom: 20px; width: 640px;
-  background: rgba(255,255,255,.07); border: 2px solid rgba(255,255,255,.12); font: 700 44px "NSKR"; }
-.A .teaser span { font: 700 38px "JBM"; color: #FF2D55; }
-.A .teaser .blur { filter: blur(10px); opacity: .7; font-family: "NSKR"; color: #fff; }
-.A .num { font: 900 250px/1 "NSKR"; letter-spacing: -10px; color: transparent; -webkit-text-stroke: 4px #FF2D55; transform-origin: 20% 60%; }
-.A .num small { font-size: 70px; -webkit-text-stroke: 0; color: rgba(255,255,255,.45); letter-spacing: 0; margin-left: 14px; }
-.A .card { left: 56px; right: 56px; padding: 54px 58px 58px; border-radius: 44px;
-  background: linear-gradient(160deg, rgba(255,255,255,.15), rgba(255,255,255,.05)); border: 2px solid rgba(255,255,255,.16);
-  box-shadow: 0 40px 100px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.12); backdrop-filter: blur(30px); }
-.A .src { display: flex; align-items: center; gap: 18px; font: 700 38px "NSKR"; color: rgba(255,255,255,.65); }
-.A .src i { width: 20px; height: 20px; border-radius: 50%; background: #FF2D55; box-shadow: 0 0 0 8px rgba(255,45,85,.25); }
-.A .card h2 { margin-top: 32px; font: 900 92px/1.18 "NSKR"; letter-spacing: -4px; }
-.A .chips { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 16px; }
-.A .chip { padding: 16px 28px; border-radius: 999px; background: rgba(255,45,85,.16); border: 2px solid rgba(255,45,85,.5); font: 700 38px "NSKR"; color: #FF8FA4; }
-.A .chip:nth-child(2n) { background: rgba(255,224,60,.14); border-color: rgba(255,224,60,.5); color: #FFE98A; }
-.A .bub { z-index: 8; width: 580px; padding: 34px 42px; border-radius: 36px; background: rgba(15,15,22,.9); border: 2px solid rgba(255,255,255,.18);
-  font: 900 68px/1.28 "NSKR"; letter-spacing: -2px; box-shadow: 0 30px 60px rgba(0,0,0,.5); }
-.A .bub::after { content: ""; position: absolute; bottom: -42px; border: 22px solid transparent; border-top: 26px solid rgba(15,15,22,.9); }
-.A .bub.tail-r::after { right: 90px; } .A .bub.tail-l::after { left: 90px; }
-.A .w { display: inline-block; margin-right: .22em; color: #fff; }
-.A .w.on { color: #FFE03C; }
-.A .send { display: flex; align-items: center; justify-content: center; gap: 26px; width: 620px; height: 160px; border-radius: 80px; background: #FF2D55;
-  font: 900 60px "NSKR"; box-shadow: 0 0 0 18px rgba(255,45,85,.18), 0 0 0 40px rgba(255,45,85,.08), 0 30px 80px rgba(255,45,85,.5); }
-.A .q { font: 700 52px "NSKR"; color: rgba(255,255,255,.6); }
-.A .charwrap img { filter: drop-shadow(0 0 2px rgba(255,255,255,.35)) drop-shadow(0 0 60px rgba(255,45,85,.35)); }
+/* ======================================================== A: Breaking (휴먼 톤) */
+.A { --bg: #2D46F0; --fg: #fff; --hi: #FFE135; --hi-ink: #111; --dot: #FF4B3E; --pen: #FFE135; }
+.A.t-ink { --redact: #4a4744; --bg: #161514; --hi: #FF6A2B; --hi-ink: #111; --pen: #FF8A55; }
+.A.t-tomato { --bg: #E8432E; --hi: #FFE135; --dot: #111; --pen: #FFE135; }
+.A.t-forest { --bg: #1E4D3F; --hi: #F5E663; --pen: #F5E663; }
+.A #stage { background: var(--bg); color: var(--fg); }
+.A .grain { position: absolute; inset: -40px; opacity: .22; mix-blend-mode: overlay; pointer-events: none; z-index: 30;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -.2'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>"); }
+.A .vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, transparent 55%, rgba(0,0,0,.28)); pointer-events: none; }
+.A .bars i { background: rgba(255,255,255,.3); } .A .bars i b { background: #fff; }
+.A .tag { position: absolute; top: 150px; left: 56px; z-index: 20; display: flex; align-items: center; gap: 26px; }
+.A .tag .box { display: flex; align-items: center; gap: 14px; background: #fff; color: #111; padding: 10px 24px 12px 20px; font: 900 40px "NSKR";
+  letter-spacing: 1px; transform: rotate(-2.5deg); box-shadow: 6px 6px 0 #111; }
+.A .tag .box b { width: 18px; height: 18px; border-radius: 50%; background: var(--dot); }
+.A .tag .hand { font: 400 58px "PEN"; color: #fff; transform: rotate(-1deg); }
+.A .pen { font: 400 78px/1.1 "PEN"; color: var(--pen); }
+.A .kt { font: 900 138px/1.15 "NSKR"; letter-spacing: -6px; }
+.A .kt .mk { color: var(--hi-ink); padding: 0 14px; }
+.A .kt .mkbg { inset: 18px -2px 10px; background: var(--hi); transform: rotate(-2deg); box-shadow: 8px 8px 0 rgba(0,0,0,.25); }
+.A .tz div { display: flex; align-items: center; gap: 22px; font: 900 50px/1.25 "NSKR"; letter-spacing: -2px; margin-bottom: 26px; }
+.A .tz em { font: 400 74px/1 "PEN"; color: var(--pen); font-style: normal; width: 50px; }
+.A .tz s { display: inline-block; height: 46px; background: var(--redact, #111); text-decoration: none; transform: rotate(-1deg); }
+.A .bignum { font: 400 300px/1 "PEN"; color: var(--pen); transform-origin: 30% 70%; }
+.A .clip { left: 64px; right: 64px; background: #FBF8F1; color: #141414; padding: 56px 56px 50px; transform-origin: 50% 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 26px 50px rgba(0,0,0,.28); }
+.A .clip .tape { position: absolute; width: 170px; height: 54px; background: rgba(238,226,190,.82); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.A .clip .src { display: flex; align-items: center; gap: 14px; font: 700 34px "NSKR"; color: #6b6b6b; letter-spacing: .5px; }
+.A .clip .src i { width: 14px; height: 14px; border-radius: 50%; background: #E8432E; }
+.A .clip h2 { margin-top: 24px; font: 900 88px/1.17 "NSKR"; letter-spacing: -4px; }
+.A .clip .notes { margin-top: 26px; }
+.A .clip .note { position: relative; display: inline-block; font: 400 62px/1.25 "PEN"; color: #D2311D; margin-right: 34px; }
+.A .clip .note svg { position: absolute; left: -4px; bottom: -6px; width: calc(100% + 8px); height: 22px; overflow: visible; }
+.A .capbox { left: 40px; right: 40px; text-align: center; z-index: 9; }
+.A .w { display: inline-block; margin: 0 .14em; font: 900 86px/1.25 "NSKR"; letter-spacing: -3px; color: #fff;
+  -webkit-text-stroke: 16px #111; paint-order: stroke fill; }
+.A .w.on { color: var(--hi); }
+.A .dm { display: inline-flex; align-items: center; gap: 24px; padding: 34px 56px; background: #fff; color: #111; border-radius: 999px;
+  font: 900 58px "NSKR"; box-shadow: 8px 8px 0 #111; }
+.A svg.draw path { fill: none; stroke: var(--pen); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ======================================================== B: Paper Press */
 .B #stage { background: #F3EEE4; color: #141414; }
@@ -235,27 +234,50 @@ function captions(box, words, s0, sceneEnd) {
   return chunks.length ? s0 + words[0][1] - .12 : s0;
 }
 
-// 캐릭터: 아래에서 통통 튀어 등장 + 숨쉬기 + 말할 때 들썩
+// 캐릭터: 부드럽게 등장 + 느린 숨쉬기 + 음성 크기에 맞춘 입 모양(립싱크)
 const SIDE = { point: "right", tablet: "right", present: "left", wave: "left", thumbsup: "right", think: "right" };
-function character(scene, pose, t0, t1, talk, opt = {}) {
+const MOUTH = { point: [600, 455], tablet: [596, 470], present: [543, 452], wave: [596, 455], thumbsup: [606, 455], think: [655, 407] };
+const IMG_W = 1122, IMG_H = 1402, MOUTH_W = 130;
+function character(scene, pose, t0, t1, D, opt = {}) {
   const side = opt.side || SIDE[pose] || "right";
-  const w = opt.width || 740;
+  const w = opt.width || 680;
   const wrap = el("div", "charwrap", null, scene);
-  at(wrap, { width: w + "px", bottom: (opt.bottom ?? -50) + "px", [side]: (opt.x ?? -180) + "px" });
-  const img = el("img", null, null, wrap); img.src = `../assets/character/${pose}.png`;
+  at(wrap, { width: w + "px", bottom: (opt.bottom ?? -60) + "px", [side]: (opt.x ?? -160) + "px" });
+  const body = at(el("div", null, null, wrap), { position: "relative", transformOrigin: "50% 100%" });
+  const img = el("img", null, null, body); img.src = `../assets/character/${pose === "present" ? "present_closed" : pose}.png`;
+  const [mx, my] = MOUTH[pose] || MOUTH.point;
+  const mouth = at(el("img", null, null, body), { position: "absolute", left: (mx / IMG_W * 100) + "%", top: (my / IMG_H * 100) + "%",
+    width: (MOUTH_W / IMG_W * 100) + "%", transformOrigin: "50% 30%", opacity: 0 });
+  mouth.src = "../assets/character/mouth_open.png";
   anim(wrap, [
-    { transform: `translateY(700px) rotate(${side === "right" ? 10 : -10}deg)` },
-    { transform: `translateY(-30px) rotate(${side === "right" ? -3 : 3}deg)`, offset: .65 },
-    { transform: "none" }], t0, .6, OUT);
-  sfx("boing", t0 + .05, .55);
+    { transform: "translateY(520px)", opacity: 0 },
+    { transform: "translateY(-14px)", opacity: 1, offset: .7 },
+    { transform: "none", opacity: 1 }], t0, .7, OUT);
+  sfx("boing", t0 + .05, .4);
+  const env = D.mouth || [];
   hook(t => {
-    const k = t - t0, speaking = talk.some(([a, b]) => t >= a && t < b);
-    const bob = Math.sin(k * 3.2) * 9, sway = Math.sin(k * 2.1) * 1.4 + (pose === "wave" ? Math.sin(k * 9) * 2.5 : 0);
-    const sq = speaking ? 1 + Math.abs(Math.sin(k * 16)) * .018 : 1;
-    img.style.transform = `translateY(${bob}px) rotate(${sway}deg) scale(${2 - sq}, ${sq})`;
+    const k = t - t0;
+    const bob = Math.sin(k * 1.7) * 4, sway = Math.sin(k * 1.1) * .5 + (pose === "wave" ? Math.sin(k * 3.2) * 1.2 : 0);
+    body.style.transform = `translateY(${bob}px) rotate(${sway}deg)`;
+    const inScene = t >= t0 && (t1 == null || t < t1);
+    const o = inScene ? (env[Math.floor(t * 30)] || 0) : 0;
+    mouth.style.opacity = o > .12 ? 1 : 0;
+    mouth.style.transform = `translate(-50%, -50%) scale(${.92 + .08 * o}, ${.3 + .7 * o})`;
   });
   return { wrap, side };
 }
+
+// 손그림 선(화살표/밑줄) 그리기 애니메이션 + 사각사각 소리
+function drawPath(svg, t, d = .45) {
+  svg.querySelectorAll("path").forEach((p, i) => {
+    const L = p.getTotalLength();
+    p.style.strokeDasharray = L;
+    anim(p, [{ strokeDashoffset: L }, { strokeDashoffset: 0 }], t + i * d * .8, d, "cubic-bezier(.6,0,.3,1)");
+  });
+  sfx("scribble", t, .7);
+}
+const ARROW = `<svg class="draw" viewBox="0 0 220 170" width="220" height="170"><path d="M14 18 C 90 -6, 190 30, 168 134"/><path d="M134 108 L 168 136 L 196 100"/></svg>`;
+const SQUIGGLE = `<svg viewBox="0 0 300 22" preserveAspectRatio="none"><path d="M2 14 C 40 4, 70 22, 110 12 S 180 4, 220 14 S 280 18, 298 8" style="fill:none;stroke:#D2311D;stroke-width:5;stroke-linecap:round"/></svg>`;
 
 function progressBars(parent, scenes) {
   const bars = el("div", "bars", null, parent);
@@ -275,68 +297,83 @@ function sceneWindow(root, sc, isLast) {
   }
 }
 
-// ===================================================== A 스타일
+// ===================================================== A 스타일 (휴먼 톤 속보)
 function buildA(D, stage) {
   const s = D.script;
-  el("div", "bg1", null, stage); el("div", "bg2", null, stage);
-  const grid = el("div", "grid", null, stage);
-  const [b1, b2] = stage.querySelectorAll(".bg1,.bg2");
-  hook(t => {
-    grid.style.transform = `translate(${(t * 26) % 72}px, ${(t * 26) % 72}px)`;
-    b1.style.transform = `translate(${Math.sin(t * .5) * 140}px, ${Math.cos(t * .4) * 120}px)`;
-    b2.style.transform = `translate(${Math.cos(t * .45) * 160}px, ${Math.sin(t * .35) * 120}px)`;
-  });
+  const grain = el("div", "grain", null, stage);
+  el("div", "vig", null, stage);
+  hook(t => { const f = Math.floor(t * 12); grain.style.transform = `translate(${(f * 37) % 40 - 20}px, ${(f * 53) % 40 - 20}px)`; });
   progressBars(stage, D.scenes);
-  const top = el("div", "top", `<div class="live"><b></b>${esc(s.tag || "BREAKING")}</div><div class="ch-label">${esc(s.channel || "")} | ${esc(s.hook_sub || "")}</div>`, stage);
-  FX.swipeIn(top, .05, .5, -600); sfx("swish", .05, .6);
-  const dot = top.querySelector(".live b");
+  const tag = el("div", "tag", `<div class="box"><b></b>${esc(s.tag || "BREAKING")}</div><div class="hand">${esc(s.channel || "")} · ${esc(s.hook_sub || "")}</div>`, stage);
+  FX.slam(tag.querySelector(".box"), .05, .35, -2.5); sfx("thump", .2, .5);
+  FX.fade(tag.querySelector(".hand"), .3, .4, 0); sfx("scribble", .3, .4);
+  const dot = tag.querySelector(".box b");
   hook(t => dot.style.opacity = Math.floor(t * 2.5) % 2 ? .25 : 1);
 
   D.scenes.forEach((sc, si) => {
-    const root = el("div", "scene", null, stage), t0 = sc.start, isLast = si === D.scenes.length - 1;
+    const root = el("div", "scene", null, stage), t0 = sc.start, t1 = sc.start + sc.dur, isLast = si === D.scenes.length - 1;
     sceneWindow(root, sc, isLast);
-    const talk = [[t0 + (sc.words[0]?.[1] ?? 0), t0 + (sc.words.at(-1)?.[2] ?? 0)]];
     if (sc.kind === "hook") {
-      const k = at(el("div", "abs kicker", esc(s.kicker || "이번 주 놓치면 대화 못 낌"), root), { top: "430px", left: "70px" });
-      FX.fade(k, t0 + .1);
-      const box = at(el("div", "abs", null, root), { top: "500px", left: "64px", right: "64px" });
+      const k = at(el("div", "abs pen", esc(s.kicker || ""), root), { top: "380px", left: "70px", transform: "rotate(-3deg)" });
+      anim(k, [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], t0 + .1, .5, "linear"); sfx("scribble", t0 + .1, .6);
+      const box = at(el("div", "abs", null, root), { top: "470px", left: "64px", right: "64px" });
       const kt = kinetic("h1", s.hook, box); fit(kt.root, 950);
-      const end = animateTitle(kt, t0 + .2, "drop", .035);
-      hook(t => box.style.transform = `translateY(${Math.sin(t * 2) * 6}px)`);
-      const tz = at(el("div", "abs", null, root), { top: "940px", left: "64px" });
+      const end = animateTitle(kt, t0 + .25, "drop", .035);
+      // 강조 단어로 향하는 손그림 화살표 + 메모
+      if (kt.marks.length && s.hook_note) {
+        root.style.display = "block";  // 위치 측정을 위해 잠깐 보이게 (seek가 다시 정리)
+        const r = kt.marks[0].el.getBoundingClientRect();
+        // 강조 단어 아래에서 위로 가리키는 화살표 + 메모
+        const ar = at(el("div", "abs", ARROW, root), { left: (r.right - 70) + "px", top: (r.bottom - 10) + "px", transform: "scale(.62) rotate(180deg)", transformOrigin: "0 0" });
+        at(ar, { left: (r.right + 70) + "px", top: (r.bottom + 120) + "px" });
+        drawPath(ar.querySelector("svg"), end - .1);
+        const note = at(el("div", "abs pen", esc(s.hook_note), root), { left: (r.right + 90) + "px", top: (r.bottom + 40) + "px", transform: "rotate(-4deg)" });
+        FX.pop(note, end + .2);
+      }
+      const tz = at(el("div", "abs tz", null, root), { top: "1000px", left: "70px" });
       s.items.forEach((it, i) => {
-        const r = el("div", "teaser", `<span>${String(i + 1).padStart(2, "0")}</span>${esc(it.teaser || "")} <span class="blur">${esc(it.teaser_hidden || "??????")}</span>`, tz);
-        FX.swipeIn(r, end - .2 + i * .16, .5, -700); sfx("swish", end - .2 + i * .16, .7);
+        const r = el("div", null, `<em>${i + 1}</em>${esc(it.teaser || "")} <s style="width:${(it.teaser_hidden || "xxxx").length * 38}px"></s>`, tz);
+        FX.swipeIn(r, end + .1 + i * .16, .45, -600); sfx("swish", end + .1 + i * .16, .7);
       });
-      character(root, s.hook_pose || "point", t0 + .5, null, talk, { width: 720, x: -210, bottom: -40 });
+      character(root, s.hook_pose || "point", t0 + .5, t1, D, { width: 640, x: -150, bottom: -60 });
     } else if (sc.kind === "item") {
       const it = s.items[sc.idx], pose = it.pose || "present", side = SIDE[pose] || "left";
-      const num = at(el("div", "abs num", `${String(sc.idx + 1).padStart(2, "0")}<small>/ ${String(s.items.length).padStart(2, "0")}</small>`, root), { top: "290px", left: "64px" });
-      FX.slam(num, t0 + .05); sfx("thump", t0 + .2, .9);
-      const card = at(el("div", "abs card", null, root), { top: "560px" });
-      el("div", "src", `<i></i>${esc(it.source || "")}`, card);
-      const kt = kinetic("h2", it.headline, card); kt.root.className = ""; at(kt.root, { marginTop: "32px", font: '900 92px/1.18 "NSKR"', letterSpacing: "-4px" });
-      FX.swipeIn(card, t0 + .15, .55, 900); sfx("whoosh", t0 + .12, .7);
-      FX.shake(card, t0 + .62, .3, 10);
-      kt.chars.forEach((c, i) => FX.rise(c.el, t0 + .45 + i * .018, .4));
-      fit(kt.root, 820);
-      const chips = el("div", "chips", null, card);
-      (it.facts || []).forEach((f, i) => { const c = el("div", "chip", esc(f), chips); FX.pop(c, t0 + .9 + i * .14); sfx("pop", t0 + .95 + i * .14, .7); });
-      const bub = at(el("div", "abs bub " + (side === "left" ? "tail-r" : "tail-l"), null, root), { top: "1150px", [side === "left" ? "right" : "left"]: "44px" });
-      const bt = captions(bub, sc.words, t0, t0 + sc.dur);
-      FX.pop(bub, bt, .3);
-      character(root, pose, t0 + .1, null, talk, { width: 720, x: -190, bottom: -60, side });
+      const num = at(el("div", "abs bignum", `${sc.idx + 1}.`, root), { top: "250px", [side === "left" ? "right" : "left"]: "80px" });
+      FX.slam(num, t0 + .05, .4, -6); sfx("thump", t0 + .22, .8);
+      const rot = sc.idx % 2 ? 1.4 : -1.6;
+      const clip = at(el("div", "abs clip", null, root), { top: "470px" });
+      [["-30px", "60px", -8], ["-24px", null, 6]].forEach(([top, left, r]) => at(el("div", "tape", null, clip), { top, [left ? "left" : "right"]: left || "70px", transform: `rotate(${r}deg)` }));
+      el("div", "src", `<i></i>${esc(it.source || "")}`, clip);
+      const kt = kinetic("h2", it.headline, clip); kt.root.className = "";
+      anim(clip, [
+        { transform: `translateY(900px) rotate(${rot * 6}deg)` },
+        { transform: `translateY(-20px) rotate(${rot * .5}deg)`, offset: .7 },
+        { transform: `rotate(${rot}deg)` }], t0 + .1, .6, OUT);
+      sfx("whoosh", t0 + .08, .7); sfx("paper", t0 + .55, .8);
+      fit(kt.root, 840);
+      kt.chars.forEach((c, i) => FX.rise(c.el, t0 + .5 + i * .016, .35));
+      const notes = el("div", "notes", null, clip);
+      (it.facts || []).forEach((f, i) => {
+        const n = el("span", "note", esc(f) + SQUIGGLE, notes);
+        const tt = t0 + 1 + i * .45;
+        anim(n, [{ clipPath: "inset(-20% 100% -40% 0)" }, { clipPath: "inset(-20% 0 -40% 0)" }], tt, .4, "linear");
+        drawPath(n.querySelector("svg"), tt + .3, .3);
+      });
+      const cap = at(el("div", "abs capbox", null, root), { top: "1110px" });
+      captions(cap, sc.words, t0, t1);
+      character(root, pose, t0 + .15, t1, D, { width: 620, x: -140, bottom: -60, side });
     } else {
-      const q = at(el("div", "abs q", esc(s.cta_kicker || ""), root), { top: "400px", left: "70px" });
-      FX.fade(q, t0 + .05);
-      const box = at(el("div", "abs", null, root), { top: "480px", left: "64px", right: "64px" });
-      const kt = kinetic("h1", s.cta, box); at(kt.root, { fontSize: "116px" }); fit(kt.root, 950);
-      const end = animateTitle(kt, t0 + .15, "drop", .03);
-      const send = at(el("div", "abs send", `<svg width="64" height="64" viewBox="0 0 24 24" fill="#fff"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>${esc(s.cta_button || "DM으로 보내기")}</div>`, root), { top: "960px", left: "64px" });
-      FX.slam(send, end - .1); sfx("thump", end + .05, .8);
-      const inner = el("div", null, null, root);
-      hook(t => { const p = clamp((t - end - .3) / .3); send.style.scale = 1 + Math.sin((t - end) * 7) * .045 * p; });
-      character(root, s.cta_pose || "thumbsup", t0 + .2, null, talk, { width: 740, x: -170, bottom: -50 });
+      const k = at(el("div", "abs pen", esc(s.cta_kicker || ""), root), { top: "380px", left: "70px", transform: "rotate(-3deg)" });
+      anim(k, [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }], t0 + .05, .45, "linear"); sfx("scribble", t0 + .05, .6);
+      const box = at(el("div", "abs", null, root), { top: "470px", left: "64px", right: "64px" });
+      const kt = kinetic("h1", s.cta, box); at(kt.root, { fontSize: "118px" }); fit(kt.root, 950);
+      const end = animateTitle(kt, t0 + .15, "drop", .028);
+      const dm = at(el("div", "abs dm", `<svg width="60" height="60" viewBox="0 0 24 24" fill="#111"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>${esc(s.cta_button || "DM으로 보내기")}`, root), { top: "1010px", left: "70px" });
+      FX.slam(dm, end, .35); sfx("thump", end + .15, .7);
+      hook(t => { const p = clamp((t - end - .4) / .3); dm.style.scale = 1 + Math.sin((t - end) * 6) * .04 * p; });
+      const ar = at(el("div", "abs", ARROW, root), { left: "560px", top: "830px", transform: "rotate(18deg)" });
+      drawPath(ar.querySelector("svg"), end + .35);
+      character(root, s.cta_pose || "thumbsup", t0 + .2, t1, D, { width: 640, x: -150, bottom: -60 });
     }
   });
 }
@@ -353,7 +390,6 @@ function buildB(D, stage) {
   D.scenes.forEach((sc, si) => {
     const root = el("div", "scene", null, stage), t0 = sc.start, isLast = si === D.scenes.length - 1;
     sceneWindow(root, sc, isLast);
-    const talk = [[t0 + (sc.words[0]?.[1] ?? 0), t0 + (sc.words.at(-1)?.[2] ?? 0)]];
     if (sc.kind === "hook") {
       const tg = at(el("div", "abs tagline", esc(s.kicker || "이번 주 헤드라인"), root), { top: "500px", left: "70px" });
       FX.fade(tg, t0 + .25);
@@ -367,7 +403,7 @@ function buildB(D, stage) {
         anim(r, [{ clipPath: "inset(0 100% 0 0)", transform: "translateX(-40px)" }, { clipPath: "inset(0 0 0 0)", transform: "none" }], end - .2 + i * .18, .45);
         sfx("swish", end - .2 + i * .18, .75);
       });
-      character(root, s.hook_pose || "tablet", t0 + .6, null, talk, { width: 700, x: -200, bottom: -40 });
+      character(root, s.hook_pose || "tablet", t0 + .6, t0 + sc.dur, D, { width: 680, x: -190, bottom: -50 });
     } else if (sc.kind === "item") {
       const it = s.items[sc.idx], pose = it.pose || "present", side = SIDE[pose] || "left";
       const cat = at(el("div", "abs cat", `<b>${String(sc.idx + 1).padStart(2, "0")}</b><span>${esc(it.category || "")}</span>`, root), { top: "460px", left: "70px" });
@@ -399,7 +435,7 @@ function buildB(D, stage) {
       }
       const cap = at(el("div", "abs cap", null, root), { top: "1430px", [statSide]: "50px" });
       captions(cap, sc.words, t0, t0 + sc.dur);
-      character(root, pose, t0 + .1, null, talk, { width: 700, x: -170, bottom: -40, side });
+      character(root, pose, t0 + .1, t0 + sc.dur, D, { width: 680, x: -160, bottom: -50, side });
     } else {
       const tg = at(el("div", "abs tagline", esc(s.cta_kicker || "편집자의 한마디"), root), { top: "500px", left: "70px" });
       FX.fade(tg, t0 + .05);
@@ -411,7 +447,7 @@ function buildB(D, stage) {
       const stamp = at(el("div", "abs stamp", `<div>${esc(s.stamp || "다음 주<br>또 만나요").replace(/&lt;br&gt;/g, "<br>")}<small>FOLLOW</small></div>`, root), { top: "1380px", right: "120px" });
       FX.slam(stamp, end + .25, .4, -14); sfx("thump", end + .45, 1);
       FX.shake(stage, end + .45, .25, 8);
-      character(root, s.cta_pose || "wave", t0 + .2, null, talk, { width: 700, x: -180, bottom: -40, side: "left" });
+      character(root, s.cta_pose || "wave", t0 + .2, t0 + sc.dur, D, { width: 680, x: -170, bottom: -50, side: "left" });
     }
   });
 }
@@ -419,9 +455,9 @@ function buildB(D, stage) {
 window.build = async D => {
   await Promise.all([
     document.fonts.load('900 100px "NSKR"'), document.fonts.load('700 100px "NSKR"'), document.fonts.load('800 100px "NSKR"'),
-    document.fonts.load('900 100px "NSERIF"'), document.fonts.load('700 100px "NSERIF"'), document.fonts.load('700 40px "JBM"'),
+    document.fonts.load('900 100px "NSERIF"'), document.fonts.load('700 100px "NSERIF"'), document.fonts.load('700 40px "JBM"'), document.fonts.load('400 60px "PEN"'),
   ]);
-  document.body.className = D.script.style || "A";
+  document.body.className = (D.script.style || "A") + (D.script.theme ? " t-" + D.script.theme : "");
   const stage = document.getElementById("stage");
   (D.script.style === "B" ? buildB : buildA)(D, stage);
   await Promise.all([...document.images].map(i => i.complete ? 1 : new Promise(r => (i.onload = i.onerror = r))));
