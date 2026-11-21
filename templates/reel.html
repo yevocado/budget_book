@@ -87,7 +87,8 @@ body { word-break: keep-all; font-family: "NSKR", sans-serif; }
 .R .kt { font: 900 136px/1.16 "NSKR"; letter-spacing: -6px; }
 .R .kt .mk { color: var(--cream); padding: 0 14px; }
 .R .kt .mkbg { inset: 16px -2px 8px; background: var(--blue); transform: rotate(-1.5deg); box-shadow: 7px 7px 0 var(--orange); }
-.R .tz div { display: flex; align-items: center; gap: 20px; font: 900 48px/1.25 "NSKR"; letter-spacing: -2px; margin-bottom: 22px; }
+.R .tz { right: 0; overflow: hidden; }
+.R .tz div { display: flex; align-items: center; gap: 20px; font: 900 46px/1.25 "NSKR"; letter-spacing: -2px; margin-bottom: 22px; white-space: nowrap; }
 .R .tz em { display: grid; place-items: center; width: 64px; height: 64px; border: 4px solid var(--ink); border-radius: 50%; font: 900 34px "NSKR"; font-style: normal; background: var(--cream); flex: none; }
 .R .tz .blur { display: inline-block; filter: blur(11px); opacity: .8; }
 .R .card { left: 56px; right: 56px; background: var(--cream); border: 5px solid var(--ink); padding: 64px 52px 48px; box-shadow: 14px 14px 0 var(--blue); }
@@ -190,8 +191,18 @@ function kinetic(tag, text, parent) {
 }
 // 너비에 맞춰 글자 크기 줄이기
 function fit(e, maxW) {
+  // 줄마다 실제 글자 오른쪽 끝까지의 폭을 재서, 가장 긴 줄이 maxW 안에 들어올 때까지 줄인다
+  const width = l => {
+    const chs = l.querySelectorAll(".ch");
+    if (!chs.length) return l.scrollWidth;
+    const left = l.getBoundingClientRect().left;
+    return Math.max(...[...chs].map(c => c.getBoundingClientRect().right)) - left;
+  };
+  const scene = e.closest(".scene"), prev = scene && scene.style.display;
+  if (scene) scene.style.display = "block";  // 숨겨진 장면은 폭이 0으로 재지므로 잠깐 보이게
   let size = parseFloat(getComputedStyle(e).fontSize);
-  while (size > 30 && [...e.querySelectorAll(".ln")].some(l => l.scrollWidth > maxW)) { size -= 4; e.style.fontSize = size + "px"; }
+  while (size > 30 && [...e.querySelectorAll(".ln")].some(l => width(l) > maxW)) { size -= 4; e.style.fontSize = size + "px"; }
+  if (scene) scene.style.display = prev;
 }
 
 // 효과 프리셋
