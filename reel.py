@@ -175,7 +175,16 @@ def build(script_path: Path, out_dir: Path, use_tts: bool, frames: str | None = 
 
     out = out_dir / f"{s['id']}.mp4"
     run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(video), "-i", str(final_audio), "-c:v", "copy",
-         "-c:a", "aac", "-b:a", "192k", "-ac", "2", "-shortest", "-movflags", "+faststart", str(out)])
+         "-c:a", "aac", "-b:a", "256k", "-ar", "48000", "-ac", "2", "-shortest", "-movflags", "+faststart", str(out)])
+    # GitHub는 100MB 넘는 파일을 거부하므로, 넘으면 화질을 아주 조금만 낮춰 다시 인코딩
+    crf = 16
+    while out.stat().st_size > 95 * 1024 * 1024 and crf < 22:
+        crf += 2
+        print(f"  파일이 95MB를 넘어 CRF {crf}로 다시 인코딩")
+        tmp = work / "re.mp4"
+        run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(out), "-c:v", "libx264", "-preset", "slow", "-crf", str(crf),
+             "-profile:v", "high", "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", str(tmp)])
+        shutil.move(tmp, out)
     run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "1.6", "-i", str(video), "-frames:v", "1", "-q:v", "2",
          str(out_dir / f"{s['id']}_cover.jpg")])
     (out_dir / f"{s['id']}_caption.txt").write_text(s.get("caption", ""), encoding="utf-8")

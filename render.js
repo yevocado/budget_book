@@ -30,13 +30,15 @@ const FPS = 30;
     return;
   }
 
-  const ff = spawn("ffmpeg", ["-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", String(FPS), "-c:v", "mjpeg", "-i", "-",
-    "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", outVideo], { stdio: ["pipe", "inherit", "inherit"] });
+  // 고화질: 프레임은 무손실 PNG, H.264 High 프로파일 CRF 16 (화질 우선, 파일은 커짐)
+  const ff = spawn("ffmpeg", ["-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", String(FPS), "-c:v", "png", "-i", "-",
+    "-c:v", "libx264", "-preset", "slow", "-crf", String(process.env.REEL_CRF || 16), "-profile:v", "high", "-level", "4.2",
+    "-pix_fmt", "yuv420p", "-x264-params", "aq-mode=3", outVideo], { stdio: ["pipe", "inherit", "inherit"] });
   const n = Math.ceil(data.total * FPS);
   const t0 = Date.now();
   for (let i = 0; i < n; i++) {
     await page.evaluate(t => window.seek(t), i / FPS);
-    const buf = await page.screenshot({ type: "jpeg", quality: 92 });
+    const buf = await page.screenshot({ type: "png" });
     if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once("drain", r));
     if (i % 150 === 0) console.log(`  프레임 ${i}/${n} (${((Date.now() - t0) / 1000).toFixed(0)}s)`);
   }

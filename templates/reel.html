@@ -465,7 +465,7 @@ function buildR(D, stage) {
   const s = D.script;
   [[-260, -200], [620, 1180], [700, 120]].forEach(([x, y], i) => {
     const d = at(el("div", "dots", null, stage), { left: x + "px", top: y + "px" });
-    hook(t => d.style.transform = `translate(${Math.sin(t * .3 + i) * 30}px, ${Math.cos(t * .25 + i) * 30}px)`);
+    // 망점은 고정 (움직이면 화면 전체가 매 프레임 바뀌어 화질이 떨어짐)
   });
   el("div", "grain", null, stage);
   progressBars(stage, D.scenes);
