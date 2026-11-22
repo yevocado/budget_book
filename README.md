@@ -32,6 +32,10 @@ Claude Code에서 "오늘 릴스 만들어줘" 또는 `/daily-reel`이라고 하
 - 배경음악: `assets/bgm.mp3`를 넣으면 자동으로 깔림
 - 예전 A/B 스타일과 캐릭터 v1, 예전 대본/영상은 `*/archive`, `assets/character_v1`에 보관
 
+## 발음
+- `assets/pronunciation.json`: 음성으로만 바꿔 읽을 단어 (예: 커닝→컨닝). 자막은 원래 글자 그대로.
+- 숫자는 `tts_text.py`가 자동 변환: 수량은 육천칠백구십오, 우리말 단위는 세 개, 번호·코드는 하나씩.
+
 ## 로컬 실행
 ```bash
 node carousel.js scripts/006_ai_daily_20261121.json output   # 인스타 캐러셀 (4:5 이미지)

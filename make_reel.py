@@ -30,6 +30,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
+from tts_text import to_tts  # 발음 사전 + 숫자 읽기 (TTS에 보내는 글자만 바꿈)
+
 W, H = 1080, 1920
 FPS = 30
 ROOT = Path(__file__).parent
@@ -144,8 +146,9 @@ def _elevenlabs(text: str, path: Path):
     pcm, words, t = [], [], 0.0
     for si, sent in enumerate(sents):
         best = None
+        spoken = to_tts(sent)  # 자막은 원문(sent), 소리는 spoken
         for take in range(EL_TAKES):
-            mp3, al = _el_request(sent, seed=1000 + si * 37 + take * 7919)
+            mp3, al = _el_request(spoken, seed=1000 + si * 37 + take * 7919)
             rise = 0.0 if sent.endswith("?") else ending_rise(mp3, al)
             if best is None or rise < best[0]:
                 best = (rise, mp3, al)
@@ -156,12 +159,12 @@ def _elevenlabs(text: str, path: Path):
         audio = _decode(mp3, 44100)
         chars, st, en = al.get("characters", []), al.get("character_start_times_seconds", []), al.get("character_end_times_seconds", [])
         joined, i = "".join(chars), 0
-        for w in sent.split():
-            k = joined.find(w, i)
+        for w, sw in zip(sent.split(), spoken.split()):  # 소리 단어의 시간을 원문 단어에 그대로 대응
+            k = joined.find(sw, i)
             if k < 0:
                 break
-            words.append((w, t + st[k], t + en[k + len(w) - 1]))
-            i = k + len(w)
+            words.append((w, t + st[k], t + en[k + len(sw) - 1]))
+            i = k + len(sw)
         pcm.append(audio)
         t += len(audio) / 44100
         if si < len(sents) - 1:
@@ -179,9 +182,9 @@ def _elevenlabs(text: str, path: Path):
 async def _edge(text: str, path: Path):
     import edge_tts
     try:
-        comm = edge_tts.Communicate(text, VOICE, rate=RATE, boundary="WordBoundary")
+        comm = edge_tts.Communicate(to_tts(text), VOICE, rate=RATE, boundary="WordBoundary")
     except TypeError:
-        comm = edge_tts.Communicate(text, VOICE, rate=RATE)
+        comm = edge_tts.Communicate(to_tts(text), VOICE, rate=RATE)
     marks = []
     with open(path, "wb") as f:
         async for ch in comm.stream():
