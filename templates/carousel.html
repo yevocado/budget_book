@@ -128,8 +128,12 @@ window.build = async s => {
     const why = it.why ? el("why", `<small>왜 중요?</small><p>${esc(it.why).replace(/\n/g, "<br>")}</p>`, { bottom: "180px", right: "56px" }) : null;
     if (why) sl.appendChild(why);
     const limit = (why ? why.getBoundingClientRect().top : 1350 - 190) - sl.getBoundingClientRect().top - 24;
+    const over = () => body.getBoundingClientRect().bottom - sl.getBoundingClientRect().top > limit;
     let fs = 42;
-    while (fs > 32 && body.getBoundingClientRect().bottom - sl.getBoundingClientRect().top > limit) { fs -= 2; body.style.fontSize = fs + "px"; }
+    while (fs > 30 && over()) { fs -= 2; body.style.fontSize = fs + "px"; }
+    if (over()) body.style.lineHeight = "1.36";
+    // 그래도 넘치면 메모를 아래쪽 띠 위로 내려 본문과 겹치지 않게
+    if (why && over()) { why.style.bottom = "150px"; why.style.transform = "rotate(-3deg) scale(.88)"; why.style.transformOrigin = "right bottom"; }
   });
 
   // 마지막. 공유 유도
@@ -140,7 +144,11 @@ window.build = async s => {
   const icon = s.cta_icon === "follow"
     ? `<svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#FBF7EE" stroke-width="2.6" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6.5 7-6.5s7 2.5 7 6.5M19 8v6M16 11h6"/></svg>`
     : `<svg width="54" height="54" viewBox="0 0 24 24" fill="#FBF7EE"><path d="M2 11 22 2l-9 20-2.5-8.5L2 11Z"/></svg>`;
-  sl.appendChild(el("", `<div class="btn">${icon}${esc(s.cta_button || "DM으로 보내기")}</div>`, { top: (ctb + 50) + "px", left: "60px" }));
+  const bw = el("", `<div class="btn">${icon}${esc(s.cta_button || "DM으로 보내기")}</div>`, { top: (ctb + 50) + "px", left: "60px", zIndex: 9 });
+  sl.appendChild(bw);
+  // 버튼이 오른쪽 캐릭터에 가리지 않게 글자 크기를 줄여 폭을 맞춤
+  const btn = bw.firstElementChild; let bf = 50;
+  while (bf > 34 && btn.getBoundingClientRect().width > 620) { bf -= 2; btn.style.fontSize = bf + "px"; btn.style.padding = `${Math.round(bf * .56)}px ${Math.round(bf * .9)}px`; }
   sl.appendChild(el("save", "저장해두고 매일 아침 만나요", { top: (ctb + 220) + "px", left: "66px", transform: "rotate(-2deg)" }));
   character(sl, s.cta_pose || "thumbsup", "right", 470);
 
