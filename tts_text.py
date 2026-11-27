@@ -8,7 +8,7 @@
 - 우리말 단위(개·명·곳·가지·번·시·살 등) 앞 1~99: 고유어로 읽는다. 3개 -> 세개, 20명 -> 스무명
 - 소수: 정수부는 양으로, 소수점 아래는 하나씩. 5.1% -> 오점일퍼센트, 87.26 -> 팔십칠점이육
 - 하나씩 읽는 숫자: 하이픈·점으로 이어진 코드나 번호(010-1234-5678, 1.2.3), 단위 없이 5자리 이상 이어진 번호. 0101 처럼 0으로 시작하는 번호.
-- 영문자와 붙은 숫자(GPT-5, iOS27, K2.6)는 건드리지 않는다.
+- 영문자와 붙은 숫자(iOS27, K2.6)는 건드리지 않는다. 단 발음 사전에 있는 모델명(GPT-6.2)은 "지피티육점이"처럼 읽는다.
 """
 import json
 import re
@@ -86,7 +86,13 @@ def _number(m: re.Match, word: str) -> str:
 
 
 def tts_word(word: str) -> str:
-    if re.search(r"[A-Za-z]-?\d", word):  # GPT-5.2, iOS27, K2.6 같은 이름은 그대로
+    m = re.match(r"^(.*?)([A-Za-z]+)-(\d+(?:\.\d+)?)(.*)$", word)
+    if m and m.group(2) in PRON:  # GPT-6.2 -> 지피티 육점이 (발음 사전에 있는 모델명만)
+        pre, name, ver, post = m.groups()
+        a, _, b = ver.partition(".")
+        spoken = sino(int(a)) + ("점" + "".join(DIG[int(c)] for c in b) if b else "")
+        return pre + PRON[name] + spoken + post
+    if re.search(r"[A-Za-z]-?\d", word):  # iOS27, K2.6 같은 이름은 그대로
         return word
     for k, v in sorted(PRON.items(), key=lambda kv: -len(kv[0])):
         word = word.replace(k, v)
