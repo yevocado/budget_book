@@ -72,6 +72,13 @@ EL_TAKES = int(os.environ.get("ELEVENLABS_TAKES", "3"))  # 문장 끝이 올라�
 SENT_GAP = 0.12  # 문장 사이 쉼(초)
 
 
+class ElevenLabsQuota(Exception):
+    """크레딧이 바닥났을 때. reel.py가 잡아서 영상 전체를 Edge 목소리로 다시 만든다."""
+
+
+EL_OFF = False  # True면 키가 있어도 Edge TTS 사용
+
+
 def _el_request(text: str, seed: int):
     req = urllib.request.Request(
         f"https://api.elevenlabs.io/v1/text-to-speech/{EL_VOICE}/with-timestamps?output_format=mp3_44100_128",
@@ -82,7 +89,10 @@ def _el_request(text: str, seed: int):
         with urllib.request.urlopen(req, timeout=90) as r:
             data = json.loads(r.read())
     except urllib.error.HTTPError as e:
-        raise SystemExit(f"ElevenLabs 오류 {e.code}: {e.read().decode(errors='ignore')[:300]}")
+        body = e.read().decode(errors="ignore")[:300]
+        if "quota_exceeded" in body:
+            raise ElevenLabsQuota(body)
+        raise SystemExit(f"ElevenLabs 오류 {e.code}: {body}")
     al = data.get("alignment") or data.get("normalized_alignment") or {}
     return base64.b64decode(data["audio_base64"]), al
 
@@ -221,7 +231,7 @@ def make_voice(text: str, path: Path, use_tts: bool):
     """음성 파일을 만들고 (길이, [(단어, 시작, 끝)]) 반환."""
     words = None
     if use_tts:
-        words = _elevenlabs(text, path) if EL_KEY else asyncio.run(_edge(text, path))
+        words = _elevenlabs(text, path) if EL_KEY and not EL_OFF else asyncio.run(_edge(text, path))
         dur = audio_duration(path)
     else:
         dur = max(1.2, len(text) * 0.1)

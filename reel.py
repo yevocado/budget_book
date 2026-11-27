@@ -21,7 +21,8 @@ import tempfile
 import wave
 from pathlib import Path
 
-from make_reel import EL_KEY, EL_VOICE, PAD, VOICE, make_voice
+import make_reel
+from make_reel import EL_KEY, EL_VOICE, PAD, VOICE, ElevenLabsQuota, make_voice
 
 ROOT = Path(__file__).parent
 BGM = ROOT / "assets" / "bgm.mp3"
@@ -203,7 +204,13 @@ def main():
     print("음성:", "없음(미리보기)" if args.no_tts else f"ElevenLabs ({EL_VOICE})" if EL_KEY else f"Edge TTS ({VOICE})")
     for p in args.scripts:
         print(f"▶ {p}")
-        build(p, args.out, not args.no_tts, args.frames)
+        try:
+            build(p, args.out, not args.no_tts, args.frames)
+        except ElevenLabsQuota:
+            # 한 영상 안에서 목소리가 섞이지 않게 처음부터 Edge 목소리로 다시
+            print("  ElevenLabs 크레딧 부족 -> Edge TTS로 다시 만듭니다")
+            make_reel.EL_OFF = True
+            build(p, args.out, not args.no_tts, args.frames)
 
 
 if __name__ == "__main__":
